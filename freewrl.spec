@@ -21,6 +21,7 @@ BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel
 BuildRequires:	freetype-devel
 BuildRequires:	gtk+2-devel
+BuildRequires:	jar
 BuildRequires:	jdk
 BuildRequires:	js-devel
 BuildRequires:	libjpeg-devel
