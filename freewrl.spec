@@ -75,7 +75,7 @@ Requires:	%{name} = %{version}-%{release}
 %description -n netscape-plugin-%{name}
 VRML plugin for Netscape WWW browser.
 
-%description -n netscape-plugin-freewrl -l pl
+%description -n netscape-plugin-%{name} -l pl
 Wtyczka VRML dla przegl±darki WWW Netscape.
 
 %package -n mozilla-firefox-plugin-%{name}
