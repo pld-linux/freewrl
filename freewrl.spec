@@ -1,11 +1,16 @@
 # TODO:
 # - install fonts system-wide (subpackage?)
+# - why not having the plugin in single dir, /usr/lib/nsplugins, and
+#   all the browsers symlink there?
+#Warning: prerequisite HTML::Parser 2.25 not found.
+#Warning: prerequisite LWP 5.47 not found.
+#Warning: prerequisite URI 1.04 not found.
 %include	/usr/lib/rpm/macros.perl
 Summary:	FreeWRL - VRML browser
 Summary(pl):	FreeWRL - przegl±darka VRML
 Name:		freewrl
 Version:	1.03
-Release:	3
+Release:	3.1
 License:	LGPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/freewrl/FreeWRL-%{version}.tar.gz
@@ -48,30 +53,47 @@ FreeWRL - VRML browser.
 %description -l pl
 FreeWRL - przegl±darka VRML.
 
-%package -n mozilla-plugin-freewrl
+%package -n mozilla-plugin-%{name}
 Summary:	VRML plugin for Mozilla WWW browser
 Summary(pl):	Wtyczka VRML dla przegl±darki WWW Mozilla
 Group:		Libraries
 Requires:	%{name} = %{version}
 Requires:	mozilla-embedded(gtk2)
 
-%description -n mozilla-plugin-freewrl
+%description -n mozilla-plugin-%{name}
 VRML plugin for Mozilla WWW browser.
 
-%description -n mozilla-plugin-freewrl -l pl
+%description -n mozilla-plugin-%{name} -l pl
 Wtyczka VRML dla przegl±darki WWW Mozilla.
 
-%package -n netscape-plugin-freewrl
+%package -n netscape-plugin-%{name}
 Summary:	VRML plugin for Netscape WWW browser
 Summary(pl):	Wtyczka VRML dla przegl±darki WWW Netscape
 Group:		Libraries
 Requires:	%{name} = %{version}
 
-%description -n netscape-plugin-freewrl
+%description -n netscape-plugin-%{name}
 VRML plugin for Netscape WWW browser.
 
 %description -n netscape-plugin-freewrl -l pl
 Wtyczka VRML dla przegl±darki WWW Netscape.
+
+%package -n mozilla-firefox-plugin-%{name}
+Summary:	VRML plugin for Mozilla Firefox browser
+Group:		Libraries
+PreReq:		mozilla-firefox
+
+%description -n mozilla-firefox-plugin-%{name}
+VRML plugin for Mozilla Firefox browser.
+
+%package -n konqueror-plugin-%{name}
+Summary:	VRML plugin for konqueror based browser
+Group:		Libraries
+PreReq:		konqueror >= 3.0.8-2.3
+
+%description -n konqueror-plugin-%{name}
+VRML plugin for konqueror based browsers, i.e.  konqueror itself or
+netraider.
 
 %prep
 %setup -q -n FreeWRL-%{version}
@@ -96,7 +118,8 @@ Wtyczka VRML dla przegl±darki WWW Netscape.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{mozilladir}/{plugins,java/classes},%{netscapedir}/plugins}
+install -d $RPM_BUILD_ROOT{%{mozilladir}/{plugins,java/classes},%{netscapedir}/plugins} \
+	$RPM_BUILD_ROOT%{_libdir}/{mozilla-firefox/plugins,/kde3/plugins/konqueror}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -106,6 +129,9 @@ install -d $RPM_BUILD_ROOT{%{mozilladir}/{plugins,java/classes},%{netscapedir}/p
 
 install Plugin/netscape/_lib/npfreewrl.so $RPM_BUILD_ROOT%{mozilladir}/plugins
 install Plugin/netscape/_lib/npfreewrl.so $RPM_BUILD_ROOT%{netscapedir}/plugins
+
+install Plugin/netscape/_lib/*.so $RPM_BUILD_ROOT%{_libdir}/mozilla-firefox/plugins
+install Plugin/netscape/_lib/*.so $RPM_BUILD_ROOT%{_libdir}/kde3/plugins/konqueror
 
 # no such directory, don't know how to make mozilla+java load this jar
 # without placing it in /usr/lib/java/jre/lib/ext :/
@@ -126,11 +152,19 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*.1*
 %{_mandir}/man3/*.3*
 
-%files -n mozilla-plugin-freewrl
+%files -n mozilla-plugin-%{name}
 %defattr(644,root,root,755)
 %attr(755,root,root) %{mozilladir}/plugins/*.so
 
-%files -n netscape-plugin-freewrl
+%files -n netscape-plugin-%{name}
 %defattr(644,root,root,755)
 %{netscapedir}/java/classes/*.jar
 %attr(755,root,root) %{netscapedir}/plugins/*.so
+
+%files -n mozilla-firefox-plugin-%{name}
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/mozilla-firefox/plugins/*.so
+
+%files -n konqueror-plugin-%{name}
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/kde3/plugins/konqueror/*.so
