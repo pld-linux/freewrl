@@ -34,8 +34,8 @@ BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	saxon
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		mozilladir	/usr/lib/mozilla
-%define		netscapedir	/usr/lib/netscape
+%define		mozilladir	/usr/%{_lib}/mozilla
+%define		netscapedir	/usr/%{_lib}/netscape
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
 # false positives found by perlreq from rpm 4.1
