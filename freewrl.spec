@@ -88,11 +88,11 @@ Wtyczka VRML dla przegl±darki WWW Netscape.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{mozilladir}/{plugins,java/classes},%{netscapedir}/plugins}
 
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 install Plugin/mozilla/_lib/npFreeWRL.so $RPM_BUILD_ROOT%{mozilladir}/plugins
 install Plugin/netscape/_lib/npfreewrl.so $RPM_BUILD_ROOT%{netscapedir}/plugins
-
 install java/classes/vrml.jar $RPM_BUILD_ROOT%{mozilladir}/java/classes
 
 %clean
