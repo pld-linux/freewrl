@@ -1,31 +1,27 @@
+%include	/usr/lib/rpm/macros.perl
 Summary:	-
 Summary(pl):	-
 Name:		freewrl
+# note: there is 0.35 on ftp
 Version:	0.34
 Release:	0.1
 License:	LGPL
 Group:		-
-Source0:	FreeWRL-%{version}.tar.gz
-#Source1:	-
+Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/freewrl/FreeWRL-%{version}.tar.gz
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-DESTDIR.patch
 Patch2:		%{name}-mozilla.patch
 URL:		http://freewrl.sourceforge.net/
-#BuildRequires:	-
-#PreReq:		-
-BuildRequires:	perl
-BuildRequires:	saxon
 BuildRequires:	ImageMagick
-BuildRequires:	perl-devel
-BuildRequires:	gtk+-devel
 BuildRequires:	binutils-static
-#Requires(pre,post):	-
-#Requires(preun):	-
-#Requires(postun):	-
-#Provides:	-
-#Obsoletes:	-
-#Conflicts:	-
+BuildRequires:	gtk+-devel
+BuildRequires:	perl-devel
+BuildRequires:	rpm-perlprov
+BuildRequires:	saxon
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		mozilladir	/usr/X11R6/lib/mozilla
+%define		netscapedir	/usr/X11R6/lib/netscape
 
 %description
 
@@ -48,7 +44,6 @@ Group:		-
 %description -n mozilla-plugin-freewrl
 
 %description -n mozilla-plugin-freewrl -l pl
-
 
 %prep
 %setup -q
@@ -73,20 +68,19 @@ install -d $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-
 %files
 %defattr(644,root,root,755)
 %doc README* TODO* ARCHITECTURE* CONFORMANCE*
 %attr(755,root,root) %{_bindir}/*
-/usr/lib/perl5/site_perl/i686-pld-linux/5.6.1/VRML
-/usr/lib/perl5/site_perl/i686-pld-linux/5.6.1/auto/VRML
+%{perl_sitearch}/VRML
+%{perl_sitearch}/auto/VRML
 
 %files -n mozilla-plugin-freewrl
 %defattr(644,root,root,755)
-/usr/X11R6/lib/mozilla/java/classes/*
-/usr/X11R6/lib/mozilla/plugins/*
+%{mozilladir}/java/classes/*
+%{mozilladir}/plugins/*
 
 %files -n netscape-plugin-freewrl
 %defattr(644,root,root,755)
-/usr/X11R6/lib/netscape/java/classes/*
-/usr/X11R6/lib/netscape/plugins/*
+%{netscapedir}/java/classes/*
+%{netscapedir}/plugins/*
