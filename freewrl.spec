@@ -3,7 +3,7 @@ Summary:	FreeWRL - VRML browser
 Summary(pl):	FreeWRL - przegl±darka VRML
 Name:		freewrl
 Version:	0.37
-Release:	1
+Release:	2
 License:	LGPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/freewrl/FreeWRL-%{version}.tar.gz
@@ -73,7 +73,8 @@ Wtyczka VRML dla przegl±darki WWW Netscape.
 %patch4 -p1
 
 %build
-perl Makefile.PL
+%{__perl} Makefile.PL \
+	INSTALLDIRS=vendor
 %{__make} \
 	OPTIMIZE="%{rpmcflags}" \
 	OPTIMIZER="%{rpmcflags}" \
@@ -100,11 +101,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc README* TODO* ARCHITECTURE* CONFORMANCE*
 %attr(755,root,root) %{_bindir}/*
-%{perl_sitearch}/VRML
-%dir %{perl_sitearch}/auto/VRML
-%dir %{perl_sitearch}/auto/VRML/*
-%{perl_sitearch}/auto/VRML/*/*.bs
-%attr(755,root,root) %{perl_sitearch}/auto/VRML/*/*.so
+%{perl_vendorarch}/VRML
+%dir %{perl_vendorarch}/auto/VRML
+%dir %{perl_vendorarch}/auto/VRML/*
+%{perl_vendorarch}/auto/VRML/*/*.bs
+%attr(755,root,root) %{perl_vendorarch}/auto/VRML/*/*.so
 %{_mandir}/man1/*.1*
 %{_mandir}/man3/*.3*
 
