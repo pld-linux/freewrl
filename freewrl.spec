@@ -4,12 +4,12 @@
 Summary:	FreeWRL - VRML browser
 Summary(pl):	FreeWRL - przegl±darka VRML
 Name:		freewrl
-Version:	1.02
+Version:	1.03
 Release:	1
 License:	LGPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/freewrl/FreeWRL-%{version}.tar.gz
-# Source0-md5:	6af5a46a8dff01d973c76201a34d57ac
+# Source0-md5:	cb4435f5f64cebd6b0cc5cf831fb186f
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-DESTDIR.patch
 Patch2:		%{name}-mozilla.patch
@@ -75,8 +75,9 @@ Wtyczka VRML dla przegl±darki WWW Netscape.
 %setup -q -n FreeWRL-%{version}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
+# for mozilla plugin - removed intentionaly?
+#%patch2 -p1
+#%patch3 -p1
 %patch4 -p1
 
 %build
@@ -84,9 +85,9 @@ Wtyczka VRML dla przegl±darki WWW Netscape.
 	INSTALLDIRS=vendor
 %{__make} \
 	OPTIMIZE="%{rpmcflags}" \
-	OPTIMIZER="%{rpmcflags}" \
-	MOZILLA_INC="/usr/include/mozilla" \
-	GTK_CONFIG="pkg-config gtk+-2.0"
+	OPTIMIZER="%{rpmcflags}"
+#	MOZILLA_INC="/usr/include/mozilla" \
+#	GTK_CONFIG="pkg-config gtk+-2.0"
 
 %{__make} -C Plugin/netscape \
 	OPTIMIZER="%{rpmcflags}"
@@ -99,9 +100,14 @@ install -d $RPM_BUILD_ROOT{%{mozilladir}/{plugins,java/classes},%{netscapedir}/p
 	DESTDIR=$RPM_BUILD_ROOT \
 	SITEARCHEXP=$RPM_BUILD_ROOT%{perl_vendorarch}
 
-install Plugin/mozilla/_lib/npFreeWRL.so $RPM_BUILD_ROOT%{mozilladir}/plugins
+#install Plugin/mozilla/_lib/npFreeWRL.so $RPM_BUILD_ROOT%{mozilladir}/plugins
+
+install Plugin/netscape/_lib/npfreewrl.so $RPM_BUILD_ROOT%{mozilladir}/plugins
 install Plugin/netscape/_lib/npfreewrl.so $RPM_BUILD_ROOT%{netscapedir}/plugins
-install java/classes/vrml.jar $RPM_BUILD_ROOT%{mozilladir}/java/classes
+
+# no such directory, don't know how to make mozilla+java load this jar
+# without placing it in /usr/lib/java/jre/lib/ext :/
+#install java/classes/vrml.jar $RPM_BUILD_ROOT%{mozilladir}/java/classes
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -120,10 +126,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n mozilla-plugin-freewrl
 %defattr(644,root,root,755)
-%{mozilladir}/java/classes/*
-%{mozilladir}/plugins/*
+%attr(755,root,root) %{mozilladir}/plugins/*.so
 
 %files -n netscape-plugin-freewrl
 %defattr(644,root,root,755)
-%{netscapedir}/java/classes/*
-%{netscapedir}/plugins/*
+%{netscapedir}/java/classes/*.jar
+%attr(755,root,root) %{netscapedir}/plugins/*.so

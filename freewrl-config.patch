@@ -23,19 +23,7 @@ diff -urN freewrl-0.34.orig/vrml.conf freewrl-0.34/vrml.conf
  
  ############################################################################
  # Mozilla development plugin installation
-@@ -39,17 +39,17 @@
- #   MOZILLA_PLUGINS => '/usr/lib/mozilla-1.0.0/plugins',
- #   MOZILLA_INC => '/usr/include/mozilla-1.0.0',
- 
--    MOZILLA_INST => '',
--    MOZILLA_PLUGINS => '',
--    MOZILLA_INC => '',
-+    MOZILLA_INST => '/usr/lib/mozilla',
-+    MOZILLA_PLUGINS => '/usr/lib/mozilla/plugins',
-+    MOZILLA_INC => '/usr/include/mozilla',
- 
- ############################################################################
- # Java installation (Sun's Java 2 SDK Standard Edition 1.4.0)
+@@ -39,9 +39,9 @@
  # If Java is not installed, leave JAVA_INST empty e.g.
  # JAVA_INST => ''
  
