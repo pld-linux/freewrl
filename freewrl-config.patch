@@ -8,22 +8,22 @@ diff -urN freewrl-0.34.orig/vrml.conf freewrl-0.34/vrml.conf
 -    SAXON_LOC => '/usr/local/src/saxon/saxon.jar',
 +    SAXON_LOC => '/usr/share/java/saxon.jar',
  
- # Netscape installation
- # 
+ ############################################################################
+ # Netscape/Mozilla  installation
 @@ -27,9 +27,9 @@
  # will be installed to.
  # NETSCAPE_PLUGINS is used to determine where the plugin will
  # be installed if this is your browser.
--    NETSCAPE_INST => '/usr/lib/netscape',
--    NETSCAPE_CLASSES => '/usr/lib/netscape/java/classes',
--    NETSCAPE_PLUGINS => '/usr/lib/netscape/plugins',
+-    NETSCAPE_INST => '/usr/lib/mozilla-1.0.1',
+-    NETSCAPE_CLASSES => '/usr/lib/mozilla-1.0.1',
+-    NETSCAPE_PLUGINS => '/usr/lib/mozilla-1.0.1/plugins',
 +    NETSCAPE_INST => '',
 +    NETSCAPE_CLASSES => '/usr/lib/netscape/java/classes',
 +    NETSCAPE_PLUGINS => '/usr/lib/netscape/plugins',
  
- # Mozilla installation
- # 
-@@ -39,15 +39,15 @@
+ ############################################################################
+ # Mozilla development plugin installation
+@@ -39,16 +39,16 @@
  #   MOZILLA_INST => '/usr/lib/mozilla-1.0.0',
  #   MOZILLA_PLUGINS => '/usr/lib/mozilla-1.0.0/plugins',
  #   MOZILLA_INC => '/usr/include/mozilla-1.0.0',
@@ -39,8 +39,9 @@ diff -urN freewrl-0.34.orig/vrml.conf freewrl-0.34/vrml.conf
  # If Java is not installed, leave JAVA_INST empty e.g.
  # JAVA_INST => ''
 -    JAVA_INST => '/usr/java/j2sdk1.4.0',
--    JAVA_INC => '-I/usr/java/j2sdk1.4.0/include -I/usr/java/j2sdk1.4.0/include/linux'
+-    JAVA_INC => '-I/usr/java/j2sdk1.4.0/include -I/usr/java/j2sdk1.4.0/include/linux',
 +    JAVA_INST => '/usr/lib/java',
-+    JAVA_INC => '-I/usr/lib/java/include -I/usr/lib/java/include/linux'
++    JAVA_INC => '-I/usr/lib/java/include -I/usr/lib/java/include/linux',
  
- );
+ ############################################################################
+ # LDFLAGS.  Set linker flags here. 
