@@ -1,0 +1,36 @@
+--- FreeWRL-0.37/JS/Makefile.PL.orig	Fri Dec 20 19:00:04 2002
++++ FreeWRL-0.37/JS/Makefile.PL	Thu Jan 23 23:09:31 2003
+@@ -30,20 +30,6 @@
+ ## Check for required Javascript libraries,
+ ## if they don't exist, make them.
+ 
+-$SRCDIR="js/src";
+-
+-print "Checking for the Mozilla JavaScript Reference library and application.\n";
+-if (-e "$SRCDIR/Linux_All_OPT.OBJ/libjs.a"
+-	&& -e "$SRCDIR/Linux_All_OPT.OBJ/libjs.so"
+-	&& -e "$SRCDIR/Linux_All_OPT.OBJ/js") {
+-    print "The Javascript library and application were found.\n";
+-} else {
+-    print "The Javascript library and application were not found - make them.\n";
+-    chdir("$SRCDIR");
+-    system("make -f Makefile.ref BUILD_OPT=1");
+-    chdir($pwd);
+-}
+-
+ use ExtUtils::MakeMaker;
+ 
+ ## get rid of -W eventually
+--- FreeWRL-0.37/vrml.conf.orig	Thu Jan 23 22:58:15 2003
++++ FreeWRL-0.37/vrml.conf	Thu Jan 23 23:10:54 2003
+@@ -28,8 +28,8 @@
+ 
+ ############################################################################
+ # Javascript lib & include (relative to the JS/ directory)
+-    JS_LIBS => '-Ljs/src/Linux_All_OPT.OBJ -ljs',
+-    JS_INC => '-Ijs/src/Linux_All_OPT.OBJ -Ijs/src',
++    JS_LIBS => '-ljs',
++    JS_INC => '-I/usr/include/js',
+ 
+ ############################################################################
+ # Saxon location - required for x3d running.

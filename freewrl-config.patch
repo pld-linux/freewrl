@@ -23,7 +23,7 @@ diff -urN freewrl-0.34.orig/vrml.conf freewrl-0.34/vrml.conf
  
  # Mozilla installation
  # 
-@@ -39,14 +39,14 @@
+@@ -39,15 +39,15 @@
  #   MOZILLA_INST => '/usr/lib/mozilla-1.0.0',
  #   MOZILLA_PLUGINS => '/usr/lib/mozilla-1.0.0/plugins',
  #   MOZILLA_INC => '/usr/include/mozilla-1.0.0',
@@ -34,12 +34,13 @@ diff -urN freewrl-0.34.orig/vrml.conf freewrl-0.34/vrml.conf
 +    MOZILLA_PLUGINS => '/usr/X11R6/lib/mozilla/plugins',
 +    MOZILLA_INC => '/usr/X11R6/include/mozilla',
  
+ ############################################################################
  # Java installation (Sun's Java 2 SDK Standard Edition 1.3.1)
  # If Java is not installed, leave JAVA_INST empty e.g.
  # JAVA_INST => ''
--    JAVA_INST => '/usr/java/jdk1.3.1',
--    JAVA_INC => '-I/usr/java/jdk1.3.1/include -I/usr/java/jdk1.3.1/include/linux'
-+    JAVA_INST => '/opt/jdk',
-+    JAVA_INC => '-I/opt/jdk/include -I/opt/jdk/include/linux'
+-    JAVA_INST => '/usr/java/j2sdk1.4.0',
+-    JAVA_INC => '-I/usr/java/j2sdk1.4.0/include -I/usr/java/j2sdk1.4.0/include/linux'
++    JAVA_INST => '/usr/lib/java',
++    JAVA_INC => '-I/usr/lib/java/include -I/usr/lib/java/include/linux'
  
  );
