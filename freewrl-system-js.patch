@@ -1,36 +1,90 @@
---- FreeWRL-0.37/JS/Makefile.PL.orig	Fri Dec 20 19:00:04 2002
-+++ FreeWRL-0.37/JS/Makefile.PL	Thu Jan 23 23:09:31 2003
-@@ -30,20 +30,6 @@
- ## Check for required Javascript libraries,
- ## if they don't exist, make them.
+--- FreeWRL-1.00/Makefile.PL.orig	2003-07-24 15:59:15.000000000 +0200
++++ FreeWRL-1.00/Makefile.PL	2003-08-10 15:38:36.860432824 +0200
+@@ -67,8 +67,6 @@
  
--$SRCDIR="js/src";
+ my $sitearchjsdir = "\$(SITEARCHEXP)/auto/VRML/JS";
+ 
+-my $jsdir = "js/src";
+-my $jsobjdir;
+ my $BUILD_OPT;
+ 
+ my $warnings_high = qq{-Wunreachable-code -Wshadow -Wcast-align};
+@@ -79,24 +77,11 @@
+ my @inc;
+ my @libs;
+ my @ldflags;
+-my @jsinc;
+-my @jslibs;
+ 
+ 
+-if ($VRML_CONFIG{PLATFORM} =~ /irix/i) {
+-	##$jsobjdir = "js/src/IRIX646.5";
+-	$jsobjdir = "$jsdir/IRIX6.5";
+-} elsif ($VRML_CONFIG{PLATFORM} =~ /macosx/i) {
+-	$jsobjdir = "$jsdir/Darwin6.6";
+-} else { ## linux used by default
+-	$jsobjdir = "$jsdir/Linux_All";
+-}
 -
--print "Checking for the Mozilla JavaScript Reference library and application.\n";
--if (-e "$SRCDIR/Linux_All_OPT.OBJ/libjs.a"
--	&& -e "$SRCDIR/Linux_All_OPT.OBJ/libjs.so"
--	&& -e "$SRCDIR/Linux_All_OPT.OBJ/js") {
--    print "The Javascript library and application were found.\n";
+ if ($VRML_CONFIG{DEBUG} eq "on") {
+-	$jsobjdir .= "_DBG.OBJ";
+ 	$BUILD_OPT = 0;
+ } else {
+-	$jsobjdir .= "_OPT.OBJ";
+ 	$BUILD_OPT = 1;
+ }
+ 
+@@ -119,9 +104,8 @@
+ }
+ 
+ push @inc, $VRML_CONFIG{FREEWRL_INC},
+-	"-I../JS/$jsobjdir", "-IJS/$jsobjdir", "-IJS/$jsdir", "-I../JS/$jsdir -ICFuncs";
+-push @libs, $VRML_CONFIG{FREEWRL_LIBS}, "-L../JS/$jsobjdir", "-LJS/$jsobjdir", "-ljs";
+-push @ldflags, $VRML_CONFIG{LDFLAGS}, "-LJS/$jsobjdir";
++	"-I/usr/include/js", "-ICFuncs";
++push @libs, $VRML_CONFIG{FREEWRL_LIBS}, "-ljs";
+ 
+ $VRML_CONFIG{FREEWRL_CCFLAGS} = join(' ', @ccflags);
+ $VRML_CONFIG{FREEWRL_INC} = join(' ', @inc);
+@@ -165,16 +149,6 @@
+ 
+ print STDERR "Checking for the Mozilla JavaScript Reference library and application.\n";
+ 
+-if (-e "JS/$jsobjdir/libjs.a" && -e "JS/$jsobjdir/libjs.so" && -e "JS/$jsobjdir/js") {
+-    print STDERR "The Javascript library and application were found.\n";
 -} else {
--    print "The Javascript library and application were not found - make them.\n";
--    chdir("$SRCDIR");
--    system("make -f Makefile.ref BUILD_OPT=1");
+-    print STDERR "The Javascript library and application were not found - make them.\n";
+-    chdir("JS/$jsdir");
+-    system("make -f Makefile.ref BUILD_OPT=$BUILD_OPT");
 -    chdir($pwd);
 -}
 -
+-
  use ExtUtils::MakeMaker;
+ require './Config.pm';
  
- ## get rid of -W eventually
---- FreeWRL-0.37/vrml.conf.orig	Thu Jan 23 22:58:15 2003
-+++ FreeWRL-0.37/vrml.conf	Thu Jan 23 23:10:54 2003
-@@ -28,8 +28,8 @@
+@@ -279,23 +253,20 @@
  
- ############################################################################
- # Javascript lib & include (relative to the JS/ directory)
--    JS_LIBS => '-Ljs/src/Linux_All_OPT.OBJ -ljs',
--    JS_INC => '-Ijs/src/Linux_All_OPT.OBJ -Ijs/src',
-+    JS_LIBS => '-ljs',
-+    JS_INC => '-I/usr/include/js',
+ 		push(@postamble, join(
+ 							  "\n",
+-							  qq{\# copy fonts, x3d, libjs.so over\n},
++							  qq{\# copy fonts, x3d over\n},
+ 							  qq{install ::},
+ 							  qq{\tcp -r fonts $vrmlinstdir\n},
+ 							  qq{\tcp -r x3d $vrmlinstdir\n},
+-							  qq{\tcp JS/$jsobjdir/libjs.so $VRML::Config::vrml_config{LIBJS_INST}\n}
+ 							 ));
  
- ############################################################################
- # Saxon location - required for x3d running.
+ 		push(@postamble, join(
+ 							  "\n",
+ 							  qq{clean ::},
+-							  qq{\tcd JS/$jsdir && \$(MAKE) -f Makefile.ref BUILD_OPT=$BUILD_OPT clean\n}
+ 							 ));
+ 
+ 		push(@postamble, join(
+ 							  "\n",
+ 							  qq{distclean :: realclean},
+-							  qq{\tcd JS/$jsdir && \$(MAKE) -f Makefile.ref BUILD_OPT=$BUILD_OPT clobber}
+ 							 ));
+ 
+ 		return join("\n", @postamble);

@@ -1,8 +1,10 @@
+# TODO:
+# - install fonts system-wide (subpackage?)
 %include	/usr/lib/rpm/macros.perl
 Summary:	FreeWRL - VRML browser
 Summary(pl):	FreeWRL - przegl±darka VRML
 Name:		freewrl
-Version:	0.39
+Version:	1.00
 Release:	1
 License:	LGPL
 Group:		X11/Applications/Graphics
@@ -18,12 +20,15 @@ BuildRequires:	ImageMagick
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel
 BuildRequires:	freetype-devel
-BuildRequires:	gtk+-devel
+BuildRequires:	gtk+2-devel
 BuildRequires:	jdk
 BuildRequires:	js-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel
+BuildRequires:	mozilla-devel
+BuildRequires:	mozilla-embedded(gtk2)
 BuildRequires:	perl-devel >= 5.8.0
+BuildRequires:	pkgconfig
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	saxon
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -46,6 +51,7 @@ Summary:	VRML plugin for Mozilla WWW browser
 Summary(pl):	Wtyczka VRML dla przegl±darki WWW Mozilla
 Group:		Libraries
 Requires:	%{name} = %{version}
+Requires:	mozilla-embedded(gtk2)
 
 %description -n mozilla-plugin-freewrl
 VRML plugin for Mozilla WWW browser.
@@ -79,7 +85,8 @@ Wtyczka VRML dla przegl±darki WWW Netscape.
 %{__make} \
 	OPTIMIZE="%{rpmcflags}" \
 	OPTIMIZER="%{rpmcflags}" \
-	MOZILLA_INC="/usr/include/mozilla"
+	MOZILLA_INC="/usr/include/mozilla" \
+	GTK_CONFIG="pkg-config gtk+-2.0"
 
 %{__make} -C Plugin/netscape \
 	OPTIMIZER="%{rpmcflags}"
@@ -89,7 +96,8 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{mozilladir}/{plugins,java/classes},%{netscapedir}/plugins}
 
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
+	DESTDIR=$RPM_BUILD_ROOT \
+	SITEARCHEXP=$RPM_BUILD_ROOT%{perl_vendorarch}
 
 install Plugin/mozilla/_lib/npFreeWRL.so $RPM_BUILD_ROOT%{mozilladir}/plugins
 install Plugin/netscape/_lib/npfreewrl.so $RPM_BUILD_ROOT%{netscapedir}/plugins
