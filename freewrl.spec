@@ -7,6 +7,7 @@ Release:	1
 License:	LGPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/freewrl/FreeWRL-%{version}.tar.gz
+# Source0-md5:	1601edff4f9c75efeaae5de93fe0a509
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-DESTDIR.patch
 Patch2:		%{name}-mozilla.patch
