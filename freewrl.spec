@@ -4,12 +4,12 @@
 Summary:	FreeWRL - VRML browser
 Summary(pl):	FreeWRL - przegl±darka VRML
 Name:		freewrl
-Version:	1.01
+Version:	1.02
 Release:	1
 License:	LGPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/freewrl/FreeWRL-%{version}.tar.gz
-# Source0-md5:	3eea7941e46ee06a103457dd66b513af
+# Source0-md5:	6af5a46a8dff01d973c76201a34d57ac
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-DESTDIR.patch
 Patch2:		%{name}-mozilla.patch
@@ -108,7 +108,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README* TODO* ARCHITECTURE* CONFORMANCE*
+%doc README.html
 %attr(755,root,root) %{_bindir}/*
 %{perl_vendorarch}/VRML
 %dir %{perl_vendorarch}/auto/VRML
