@@ -3,7 +3,7 @@ Summary:	FreeWRL - VRML browser
 Summary(pl):	FreeWRL - przegl±darka VRML
 Name:		freewrl
 Version:	0.37
-Release:	0.1
+Release:	1
 License:	LGPL
 Group:		X11/Applications/Graphics
 Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/freewrl/FreeWRL-%{version}.tar.gz
@@ -14,16 +14,27 @@ Patch3:		%{name}-gcc3.patch
 Patch4:		%{name}-system-js.patch
 URL:		http://freewrl.sourceforge.net/
 BuildRequires:	ImageMagick
+BuildRequires:	OpenGL-devel
+BuildRequires:	XFree86-devel
+BuildRequires:	freetype-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	jdk
 BuildRequires:	js-devel
+BuildRequires:	libjpeg-devel
+BuildRequires:	libpng-devel
 BuildRequires:	perl-devel
 BuildRequires:	rpm-perlprov
 BuildRequires:	saxon
+# not found by perlprov from rpm 4.1
+Provides:	perl(VRML::Config)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		mozilladir	/usr/X11R6/lib/mozilla
 %define		netscapedir	/usr/X11R6/lib/netscape
+
+%define		_noautoreqdep	libGL.so.1 libGLU.so.1
+# false positives found by perlreq from rpm 4.1
+%define		_noautoreq	'perl(VRML::Events)' 'perl(VRML::VRMLCU)' 'perl(VRML::VRMLFields)' 'perl(VRML::VRMLNodes)' 'perl(VRMLFields)' 'perl(VRMLNodes)' 'perl(VRMLRend)'
 
 %description
 FreeWRL - VRML browser.
@@ -62,13 +73,14 @@ Wtyczka VRML dla przegl±darki WWW Netscape.
 %patch4 -p1
 
 %build
-CFLAGS="%{rpmcflags} -I/usr/X11R6/include/mozilla"
-CXXFLAGS="$CFLAGS"
-MOZILLA_INC="-I/usr/X11R6/include/mozilla"
-export CFLAGS CXXFLAGS MOZILLA_INC
 perl Makefile.PL
-%{__make}
-%{__make} -C Plugin/netscape
+%{__make} \
+	OPTIMIZE="%{rpmcflags}" \
+	OPTIMIZER="%{rpmcflags}" \
+	MOZILLA_INC="/usr/X11R6/include/mozilla"
+
+%{__make} -C Plugin/netscape \
+	OPTIMIZER="%{rpmcflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
