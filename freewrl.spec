@@ -57,7 +57,7 @@ FreeWRL - przegl±darka VRML.
 Summary:	VRML plugin for Mozilla WWW browser
 Summary(pl):	Wtyczka VRML dla przegl±darki WWW Mozilla
 Group:		Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 Requires:	mozilla-embedded(gtk2)
 
 %description -n mozilla-plugin-%{name}
@@ -70,7 +70,7 @@ Wtyczka VRML dla przegl±darki WWW Mozilla.
 Summary:	VRML plugin for Netscape WWW browser
 Summary(pl):	Wtyczka VRML dla przegl±darki WWW Netscape
 Group:		Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description -n netscape-plugin-%{name}
 VRML plugin for Netscape WWW browser.
@@ -80,20 +80,29 @@ Wtyczka VRML dla przegl±darki WWW Netscape.
 
 %package -n mozilla-firefox-plugin-%{name}
 Summary:	VRML plugin for Mozilla Firefox browser
+Summary(pl):	Wtyczka VRML dla przegl±darki Mozilla Firefox
 Group:		Libraries
 PreReq:		mozilla-firefox
+Requires:	%{name} = %{version}-%{release}
 
 %description -n mozilla-firefox-plugin-%{name}
 VRML plugin for Mozilla Firefox browser.
 
+%description -n mozilla-firefox-plugin-%{name} -l pl
+Wtyczka VRML dla przegl±darki Mozilla Firefox.
+
 %package -n konqueror-plugin-%{name}
-Summary:	VRML plugin for konqueror based browser
+Summary:	VRML plugin for Konqueror browser
+Summary(pl):	Wtyczka VRML dla przegl±darki Konqueror
 Group:		Libraries
 PreReq:		konqueror >= 3.0.8-2.3
+Requires:	%{name} = %{version}-%{release}
 
 %description -n konqueror-plugin-%{name}
-VRML plugin for konqueror based browsers, i.e.  konqueror itself or
-netraider.
+VRML plugin for Konqueror browser.
+
+%description -n konqueror-plugin-%{name} -l pl
+Wtyczka VRML dla przegl±darki Konqueror.
 
 %prep
 %setup -q -n FreeWRL-%{version}
