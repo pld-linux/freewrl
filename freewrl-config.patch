@@ -14,9 +14,9 @@ diff -urN freewrl-0.34.orig/vrml.conf freewrl-0.34/vrml.conf
  # NETSCAPE_PLUGINS is used to determine where the plugin will
  # be installed if this is your browser.
  
--    NETSCAPE_INST => '/usr/lib/mozilla-1.0.1',
--    NETSCAPE_CLASSES => '/usr/lib/mozilla-1.0.1',
--    NETSCAPE_PLUGINS => '/usr/lib/mozilla-1.0.1/plugins',
+-    NETSCAPE_INST => '/opt/netscape/plugins',
+-    NETSCAPE_CLASSES => '/opt/netscape/plugins',
+-    NETSCAPE_PLUGINS => '/opt/netscape/plugins',
 +    NETSCAPE_INST => '',
 +    NETSCAPE_CLASSES => '/usr/lib/netscape/java/classes',
 +    NETSCAPE_PLUGINS => '/usr/lib/netscape/plugins',
