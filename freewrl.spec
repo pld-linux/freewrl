@@ -22,15 +22,13 @@ BuildRequires:	jdk
 BuildRequires:	js-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel
-BuildRequires:	perl-devel
-BuildRequires:	rpm-perlprov
+BuildRequires:	perl-devel >= 5.8.0
+BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	saxon
-# not found by perlprov from rpm 4.1
-Provides:	perl(VRML::Config)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		mozilladir	/usr/X11R6/lib/mozilla
-%define		netscapedir	/usr/X11R6/lib/netscape
+%define		mozilladir	/usr/lib/mozilla
+%define		netscapedir	/usr/lib/netscape
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
 # false positives found by perlreq from rpm 4.1
@@ -46,6 +44,7 @@ FreeWRL - przegl±darka VRML.
 Summary:	VRML plugin for Mozilla WWW browser
 Summary(pl):	Wtyczka VRML dla przegl±darki WWW Mozilla
 Group:		Libraries
+Requires:	%{name} = %{version}
 
 %description -n mozilla-plugin-freewrl
 VRML plugin for Mozilla WWW browser.
@@ -57,6 +56,7 @@ Wtyczka VRML dla przegl±darki WWW Mozilla.
 Summary:	VRML plugin for Netscape WWW browser
 Summary(pl):	Wtyczka VRML dla przegl±darki WWW Netscape
 Group:		Libraries
+Requires:	%{name} = %{version}
 
 %description -n netscape-plugin-freewrl
 VRML plugin for Netscape WWW browser.
@@ -78,7 +78,7 @@ Wtyczka VRML dla przegl±darki WWW Netscape.
 %{__make} \
 	OPTIMIZE="%{rpmcflags}" \
 	OPTIMIZER="%{rpmcflags}" \
-	MOZILLA_INC="/usr/X11R6/include/mozilla"
+	MOZILLA_INC="/usr/include/mozilla"
 
 %{__make} -C Plugin/netscape \
 	OPTIMIZER="%{rpmcflags}"

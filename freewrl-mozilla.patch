@@ -6,14 +6,14 @@ diff -urN freewrl-0.34.orig/Plugin/mozilla/Makefile freewrl-0.34/Plugin/mozilla/
  ifndef ${MOZILLA_INST}
 
 -MOZILLA_INST:=/usr/lib/mozilla-1.0.0
-+MOZILLA_INST:=/usr/X11R6/lib/mozilla
++MOZILLA_INST:=/usr/lib/mozilla
 
  endif
 
  ifndef ${MOZILLA_INC}
 
 -MOZILLA_INC:=/usr/include/mozilla-1.0.0
-+MOZILLA_INC:=/usr/X11R6/include/mozilla
++MOZILLA_INC:=/usr/include/mozilla
 
  endif
  
@@ -22,7 +22,7 @@ diff -urN freewrl-0.34.orig/Plugin/mozilla/Makefile freewrl-0.34/Plugin/mozilla/
  INC:=\
       -Iinclude\
 +     -I/usr/include/nspr\
-+     -I/usr/X11R6/include/gtk-1.2\
++     -I/usr/include/gtk-1.2\
       -I${PLUGIN_GLUE_DIR}/CFuncs\
       -I${MOZILLA_INC}/plugin\
       -I${MOZILLA_INC}/xpcom\
