@@ -1,0 +1,26 @@
+diff -urN freewrl-0.34.orig/Plugin/netscape/Makefile freewrl-0.34/Plugin/netscape/Makefile
+--- freewrl-0.34.orig/Plugin/netscape/Makefile	Thu Sep 19 21:47:02 2002
++++ freewrl-0.34/Plugin/netscape/Makefile	Sun Oct 13 15:58:50 2002
+@@ -97,7 +97,8 @@
+ 	mkdir -p ${OBJ_DIR}
+ 
+ install :: ${LIB_DIR}/${SHAREDTARGET}
+-	cp -f ${LIB_DIR}/${SHAREDTARGET} ${PLUGIN_DIR}
++	install -d ${DESTDIR}/${PLUGIN_DIR}
++	cp -f ${LIB_DIR}/${SHAREDTARGET} ${DESTDIR}/${PLUGIN_DIR}
+ 
+ ${LIB_DIR}/${SHAREDTARGET}: lib_dir obj_dir ${OBJ}
+ 	${CC} -shared ${LIBS} ${OBJ} ${LDFLAGS} -o ${LIB_DIR}/${SHAREDTARGET}
+diff -urN freewrl-0.34.orig/java/classes/Makefile.PL freewrl-0.34/java/classes/Makefile.PL
+--- freewrl-0.34.orig/java/classes/Makefile.PL	Thu Sep 19 21:47:02 2002
++++ freewrl-0.34/java/classes/Makefile.PL	Sun Oct 13 16:00:10 2002
+@@ -60,7 +60,8 @@
+         $_ .= q{
+ 
+ install ::
+-	cp vrml.jar $(NETSCAPE_CLASS_DIR)
++	install -d $(DESTDIR)$(NETSCAPE_CLASS_DIR)
++	cp vrml.jar $(DESTDIR)$(NETSCAPE_CLASS_DIR)
+ };
+     }
+ }

@@ -1,0 +1,36 @@
+diff -urN freewrl-0.34.orig/Plugin/mozilla/Makefile freewrl-0.34/Plugin/mozilla/Makefile
+--- freewrl-0.34.orig/Plugin/mozilla/Makefile   Thu Sep 19 21:47:02 2002
++++ freewrl-0.34/Plugin/mozilla/Makefile        Sun Oct 13 16:49:50 2002
+@@ -18,13 +18,13 @@
+
+ ifndef ${MOZILLA_INST}
+
+-MOZILLA_INST:=/usr/lib/mozilla-1.0.0
++MOZILLA_INST:=/usr/X11R6/lib/mozilla
+
+ endif
+
+ ifndef ${MOZILLA_INC}
+
+-MOZILLA_INC:=/usr/include/mozilla-1.0.0
++MOZILLA_INC:=/usr/X11R6/include/mozilla
+
+ endif
+ 
+@@ -118,6 +118,8 @@
+
+ INC:=\
+      -Iinclude\
++     -I/usr/include/nspr\
++     -I/usr/X11R6/include/gtk-1.2\
+      -I${PLUGIN_GLUE_DIR}/CFuncs\
+      -I${MOZILLA_INC}/plugin\
+      -I${MOZILLA_INC}/xpcom\
+@@ -151,7 +153,6 @@
+         ${OPTIMIZER}\
+         ${INC}\
+         -pedantic\
+-        -fshort-wchar\
+         -fno-exceptions\
+         -pthread\
+         -pipe\

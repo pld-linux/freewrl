@@ -1,0 +1,45 @@
+diff -urN freewrl-0.34.orig/vrml.conf freewrl-0.34/vrml.conf
+--- freewrl-0.34.orig/vrml.conf	Thu Sep 19 21:47:02 2002
++++ freewrl-0.34/vrml.conf	Sun Oct 13 15:20:53 2002
+@@ -16,7 +16,7 @@
+     JS_INC => '-Ijs/Linux_All_DBG.OBJ -Ijs/',
+ 
+ # Saxon location - required for x3d running.
+-    SAXON_LOC => '/usr/local/src/saxon/saxon.jar',
++    SAXON_LOC => '/usr/share/java/classes/saxon.jar',
+ 
+ # Netscape installation
+ # 
+@@ -27,9 +27,9 @@
+ # will be installed to.
+ # NETSCAPE_PLUGINS is used to determine where the plugin will
+ # be installed if this is your browser.
+-    NETSCAPE_INST => '/usr/lib/netscape',
+-    NETSCAPE_CLASSES => '/usr/lib/netscape/java/classes',
+-    NETSCAPE_PLUGINS => '/usr/lib/netscape/plugins',
++    NETSCAPE_INST => '',
++    NETSCAPE_CLASSES => '/usr/X11R6/lib/netscape/java/classes',
++    NETSCAPE_PLUGINS => '/usr/X11R6/lib/netscape/plugins',
+ 
+ # Mozilla installation
+ # 
+@@ -39,14 +39,14 @@
+ #   MOZILLA_INST => '/usr/lib/mozilla-1.0.0',
+ #   MOZILLA_PLUGINS => '/usr/lib/mozilla-1.0.0/plugins',
+ #   MOZILLA_INC => '/usr/include/mozilla-1.0.0',
+-    MOZILLA_INST => '',
+-    MOZILLA_PLUGINS => '',
+-    MOZILLA_INC => '',
++    MOZILLA_INST => '/usr/X11R6/lib/mozilla',
++    MOZILLA_PLUGINS => '/usr/X11R6/lib/mozilla/plugins',
++    MOZILLA_INC => '/usr/X11R6/include/mozilla',
+ 
+ # Java installation (Sun's Java 2 SDK Standard Edition 1.3.1)
+ # If Java is not installed, leave JAVA_INST empty e.g.
+ # JAVA_INST => ''
+-    JAVA_INST => '/usr/java/jdk1.3.1',
+-    JAVA_INC => '-I/usr/java/jdk1.3.1/include -I/usr/java/jdk1.3.1/include/linux'
++    JAVA_INST => '/opt/jdk',
++    JAVA_INC => '-I/opt/jdk/include -I/opt/jdk/include/linux'
+ 
+ );
