@@ -1,0 +1,111 @@
+--- FreeWRL-1.12/SoundEngine/Makefile.orig	2005-04-25 15:47:19.000000000 +0200
++++ FreeWRL-1.12/SoundEngine/Makefile	2005-04-29 15:05:18.046431376 +0200
+@@ -1,17 +1,16 @@
+ #INCLUDE = -I/usr/X11R6/include/
+ #LIBS  = -L. -L/usr/X11R6/lib -L/usr/local/lib
+ 
+-COMPILERFLAGS = -Wall
++COMPILERFLAGS = -Wall $(OPTIMIZE)
+ CC = gcc
+ CFLAGS = $(COMPILERFLAGS) $(INCLUDE)
+ LIBRARIES = -lm
+ SVROBJ = main.o wavmaker.o mixer.o
+ 
+-all: main
++all: FreeWRL_SoundServer
+ 
+-main: $(SVROBJ)
++FreeWRL_SoundServer: $(SVROBJ)
+ 	$(CC) $(SVROBJ) $(CFLAGS) -o FreeWRL_SoundServer $(LIBS) $(LIBRARIES)
+-	strip FreeWRL_SoundServer
+ 
+ mixer: mixer.o
+ 	$(CC) $(CFLAGS) -o $mixer $(LIBS) $< $(LIBRARIES)
+@@ -22,6 +21,6 @@
+ clean:
+ 	rm -f *.o FreeWRL_SoundServer
+ 
+-install:  main
++install: FreeWRL_SoundServer
+ 	cp FreeWRL_SoundServer $(BINDIR)
+ 
+--- FreeWRL-1.12/CFrontEnd/Makefile.orig	2005-04-25 15:47:19.000000000 +0200
++++ FreeWRL-1.12/CFrontEnd/Makefile	2005-04-29 15:10:58.282707600 +0200
+@@ -13,18 +13,17 @@
+ all:	freewrl
+ 
+ install:  freewrl
+-	strip freewrl
+-	cp freewrl $(BINDIR)
++	install freewrl $(BINDIR)
+ 
+-perlxsi:
++perlxsi.o:
+ 	perl -MExtUtils::Embed -e xsinit -- -o perlxsi.c;
+-	$(CC) $(INC) $(PFLAGS) perlxsi.c
++	$(CC) $(INC) $(PFLAGS) $(OPTIMIZE) perlxsi.c
+ 
+-fwopts:
+-	$(CC) $(INC) $(FWFLAGS) $(DEFINE) fwopts.c
++fwopts.o:
++	$(CC) $(INC) $(FWFLAGS) $(OPTIMIZE) $(DEFINE) fwopts.c
+ 
+-freewrl: perlxsi fwopts
+-	$(CC) $(INC) $(FRFLAGS) $(DEFINE) freewrl.c
++freewrl: perlxsi.o fwopts.o
++	$(CC) $(INC) $(FRFLAGS) $(OPTIMIZE) $(DEFINE) freewrl.c
+ 
+ 	$(CC) -L../blib/arch/auto/VRML/VRMLFunc -o freewrl \
+ 	perlxsi.o freewrl.o fwopts.o \
+--- FreeWRL-1.12/FreeWRL_Message/Makefile.orig	2005-04-25 15:47:19.000000000 +0200
++++ FreeWRL-1.12/FreeWRL_Message/Makefile	2005-04-29 15:26:42.513162752 +0200
+@@ -1,25 +1,21 @@
+ #INCLUDE = -I/usr/X11R6/include/
+ #LIBS  = -L. -L/usr/X11R6/lib -L/usr/local/lib
+ 
+-COMPILERFLAGS = -Wall
++COMPILERFLAGS = -Wall $(OPTIMIZE)
+ CC = gcc
+ CFLAGS = $(COMPILERFLAGS) $(INCLUDE)
+ # use this for better borders on window LIBRARIES = -lXaw3d
+ LIBRARIES = -lXaw
+ SVROBJ = FreeWRL_Message.o
+ 
+-all: main
++all: FreeWRL_Message
+ 
+-main: $(SVROBJ)
++FreeWRL_Message: $(SVROBJ)
+ 	$(CC) $(SVROBJ) $(CFLAGS) -o FreeWRL_Message $(LIBS) $(LIBRARIES)
+-	strip FreeWRL_Message
+-
+-FreeWRL_Message: FreeWRL_Message.o
+-	$(CC) $(CFLAGS) -o $FreeWRL_Message $(LIBS) $< $(LIBRARIES)
+ 
+ clean:
+ 	rm -f *.o FreeWRL_Message
+ 
+-install:  main
+-	cp FreeWRL_Message $(BINDIR)
++install: FreeWRL_Message
++	install FreeWRL_Message $(BINDIR)
+ 
+--- FreeWRL-1.12/Plugin/Makefile.orig	2005-04-25 15:47:19.000000000 +0200
++++ FreeWRL-1.12/Plugin/Makefile	2005-04-29 15:18:36.709016208 +0200
+@@ -38,12 +38,12 @@
+ 
+ SHAREDTARGET=npfreewrl.so
+ 
+-install: npfreewrl
+-	cp npfreewrl.so $(PLUGDIR)
++all:	npfreewrl.so
+ 
+-all:	npfreewrl
++install: npfreewrl.so
++	install npfreewrl.so $(PLUGDIR)
+ 
+-npfreewrl: $(OBJ)
++npfreewrl.so: $(OBJ)
+ 	$(CC) -shared -o $(SHAREDTARGET) $(OBJ) $(LDFLAGS)
+ 
+ npfreewrl.o: netscape/source/npfreewrl.c
