@@ -2,30 +2,24 @@
 # - install fonts system-wide (subpackage?)
 # - why not having the plugin in single dir, /usr/lib/nsplugins, and
 #   all the browsers symlink there?
-#Warning: prerequisite HTML::Parser 2.25 not found.
-#Warning: prerequisite LWP 5.47 not found.
-#Warning: prerequisite URI 1.04 not found.
 %include	/usr/lib/rpm/macros.perl
 Summary:	FreeWRL - VRML browser
 Summary(pl):	FreeWRL - przegl±darka VRML
 Name:		freewrl
-Version:	1.03
-Release:	3.1
+Version:	1.12
+Release:	1
 License:	LGPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/freewrl/FreeWRL-%{version}.tar.gz
-# Source0-md5:	cb4435f5f64cebd6b0cc5cf831fb186f
+# Source0-md5:	cc717ca6587be7096e06338cd841350f
 Patch0:		%{name}-config.patch
-Patch1:		%{name}-DESTDIR.patch
-Patch2:		%{name}-mozilla.patch
-Patch3:		%{name}-gcc3.patch
-Patch4:		%{name}-system-js.patch
+Patch1:		%{name}-system-js.patch
+Patch2:		%{name}-make.patch
 URL:		http://freewrl.sourceforge.net/
 BuildRequires:	ImageMagick
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel
-BuildRequires:	freetype-devel
-BuildRequires:	gtk+2-devel
+BuildRequires:	freetype-devel >= 2.0
 BuildRequires:	jar
 BuildRequires:	jdk
 BuildRequires:	js-devel
@@ -34,9 +28,13 @@ BuildRequires:	libpng-devel
 BuildRequires:	mozilla-devel
 BuildRequires:	mozilla-embedded(gtk2)
 BuildRequires:	perl-devel >= 1:5.8.0
-BuildRequires:	pkgconfig
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	saxon
+%ifarch amd64 ia64 ppc64 s390x sparc64
+Provides:	libFreeWRLFunc.so()(64-bit)
+%else
+Provides:	libFreeWRLFunc.so
+%endif
 Requires:	perl(DynaLoader) = %(%{__perl} -MDynaLoader -e 'print DynaLoader->VERSION')
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -108,43 +106,47 @@ Wtyczka VRML dla przegl±darki Konqueror.
 %setup -q -n FreeWRL-%{version}
 %patch0 -p1
 %patch1 -p1
-# for mozilla plugin - removed intentionaly?
-#%patch2 -p1
-#%patch3 -p1
-%patch4 -p1
+%patch2 -p1
+
+# this file causes unnecessary/unwanted rebuilds of JS module
+rm -f JS/Makefile.aqua.PL
 
 %build
 %{__perl} Makefile.PL \
 	INSTALLDIRS=vendor
 %{__make} \
+	CC="%{__cc}" \
 	OPTIMIZE="%{rpmcflags}" \
-	OPTIMIZER="%{rpmcflags}"
-#	MOZILLA_INC="/usr/include/mozilla" \
-#	GTK_CONFIG="pkg-config gtk+-2.0"
+	OPTIMIZER="%{rpmcflags}" \
+	DESTINSTALLPRIVLIB=%{perl_vendorlib}
 
-%{__make} -C Plugin/netscape \
+%{__make} -C Plugin \
+	CC="%{__cc}" \
 	OPTIMIZER="%{rpmcflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{mozilladir}/{plugins,java/classes},%{netscapedir}/plugins} \
-	$RPM_BUILD_ROOT%{_libdir}/{mozilla-firefox/plugins,/kde3/plugins/konqueror}
+install -d $RPM_BUILD_ROOT{%{mozilladir}/plugins,%{netscapedir}/plugins} \
+	$RPM_BUILD_ROOT%{_libdir}/{mozilla-firefox/plugins,kde3/plugins/konqueror} \
+	$RPM_BUILD_ROOT%{perl_vendorlib}/VRML
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	SITEARCHEXP=$RPM_BUILD_ROOT%{perl_vendorarch}
+	SITEARCHEXP=$RPM_BUILD_ROOT%{perl_vendorarch} \
+	DESTINSTALLPRIVLIB=$RPM_BUILD_ROOT%{perl_vendorlib}
 
-#install Plugin/mozilla/_lib/npFreeWRL.so $RPM_BUILD_ROOT%{mozilladir}/plugins
+# mozilla plugin is installed by make install
+install Plugin/npfreewrl.so $RPM_BUILD_ROOT%{netscapedir}/plugins
+install Plugin/npfreewrl.so $RPM_BUILD_ROOT%{_libdir}/mozilla-firefox/plugins
+install Plugin/npfreewrl.so $RPM_BUILD_ROOT%{_libdir}/kde3/plugins/konqueror
 
-install Plugin/netscape/_lib/npfreewrl.so $RPM_BUILD_ROOT%{mozilladir}/plugins
-install Plugin/netscape/_lib/npfreewrl.so $RPM_BUILD_ROOT%{netscapedir}/plugins
+# specified in java/classes/Makefile.PL, but finally not installed
+install java/classes/vrml.jar $RPM_BUILD_ROOT%{perl_vendorlib}/VRML
+install java/classes/java.policy $RPM_BUILD_ROOT%{perl_vendorlib}/VRML
 
-install Plugin/netscape/_lib/*.so $RPM_BUILD_ROOT%{_libdir}/mozilla-firefox/plugins
-install Plugin/netscape/_lib/*.so $RPM_BUILD_ROOT%{_libdir}/kde3/plugins/konqueror
-
-# no such directory, don't know how to make mozilla+java load this jar
-# without placing it in /usr/lib/java/jre/lib/ext :/
-#install java/classes/vrml.jar $RPM_BUILD_ROOT%{mozilladir}/java/classes
+# remove copy, make a symlink
+rm -f $RPM_BUILD_ROOT%{perl_vendorarch}/auto/VRML/VRMLFunc/libFreeWRLFunc.so
+ln -sf %{perl_vendorarch}/auto/VRML/VRMLFunc/VRMLFunc.so $RPM_BUILD_ROOT%{_libdir}/libFreeWRLFunc.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -153,6 +155,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc README.html
 %attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_libdir}/libFreeWRLFunc.so
+%dir %{perl_vendorlib}/VRML
+%attr(755,root,root) %{perl_vendorlib}/VRML/fw2init.pl
+%{perl_vendorlib}/VRML/java.policy
+%{perl_vendorlib}/VRML/vrml.jar
+%dir %{perl_vendorlib}/VRML/fonts
+# Bitstream Amerigo, BauerBodni, Futura fonts
+%{perl_vendorlib}/VRML/fonts/*.ttf
 %{perl_vendorarch}/VRML
 %dir %{perl_vendorarch}/auto/VRML
 %dir %{perl_vendorarch}/auto/VRML/*
@@ -167,7 +177,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n netscape-plugin-%{name}
 %defattr(644,root,root,755)
-%{netscapedir}/java/classes/*.jar
 %attr(755,root,root) %{netscapedir}/plugins/*.so
 
 %files -n mozilla-firefox-plugin-%{name}
