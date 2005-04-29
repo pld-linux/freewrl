@@ -1,15 +1,15 @@
---- FreeWRL-1.00/Makefile.PL.orig	2003-07-24 15:59:15.000000000 +0200
-+++ FreeWRL-1.00/Makefile.PL	2003-08-10 15:38:36.860432824 +0200
-@@ -67,8 +67,6 @@
+--- FreeWRL-1.12/Makefile.PL.orig	2005-04-25 15:47:19.000000000 +0200
++++ FreeWRL-1.12/Makefile.PL	2005-04-28 22:16:18.330867064 +0200
+@@ -76,8 +76,6 @@
  
- my $sitearchjsdir = "\$(SITEARCHEXP)/auto/VRML/JS";
+ my $sitearchjsdir = "\$(INSTALLPRIVLIB)/auto/VRML/JS";
  
 -my $jsdir = "js/src";
 -my $jsobjdir;
  my $BUILD_OPT;
  
  my $warnings_high = qq{-Wunreachable-code -Wshadow -Wcast-align};
-@@ -79,24 +77,11 @@
+@@ -88,25 +86,11 @@
  my @inc;
  my @libs;
  my @ldflags;
@@ -18,10 +18,11 @@
  
  
 -if ($VRML_CONFIG{PLATFORM} =~ /irix/i) {
--	##$jsobjdir = "js/src/IRIX646.5";
 -	$jsobjdir = "$jsdir/IRIX6.5";
--} elsif ($VRML_CONFIG{PLATFORM} =~ /macosx/i) {
--	$jsobjdir = "$jsdir/Darwin6.6";
+-} elsif ($OS eq "Darwin") {
+-	$jsobjdir = "$jsdir/Darwin_All";
+-} elsif ($VRML_CONFIG{PLATFORM} =~ /sunos/i) {
+-	$jsobjdir = "$jsdir/SunOS5.8";
 -} else { ## linux used by default
 -	$jsobjdir = "$jsdir/Linux_All";
 -}
@@ -34,19 +35,19 @@
  	$BUILD_OPT = 1;
  }
  
-@@ -119,9 +104,8 @@
+@@ -151,9 +135,8 @@
  }
  
  push @inc, $VRML_CONFIG{FREEWRL_INC},
 -	"-I../JS/$jsobjdir", "-IJS/$jsobjdir", "-IJS/$jsdir", "-I../JS/$jsdir -ICFuncs";
--push @libs, $VRML_CONFIG{FREEWRL_LIBS}, "-L../JS/$jsobjdir", "-LJS/$jsobjdir", "-ljs";
--push @ldflags, $VRML_CONFIG{LDFLAGS}, "-LJS/$jsobjdir";
+-push @libs, $VRML_CONFIG{FREEWRL_LIBS}, "-L../JS/$jsobjdir", "-LJS/$jsobjdir", "-Lblib/arch/auto/VRML/VRMLFunc/", "-ljs";
+-push @ldflags, $VRML_CONFIG{LDFLAGS}, "-LJS/$jsobjdir", "-Lblib/arch/auto/VRML/VRMLFunc/";
 +	"-I/usr/include/js", "-ICFuncs";
 +push @libs, $VRML_CONFIG{FREEWRL_LIBS}, "-ljs";
  
- $VRML_CONFIG{FREEWRL_CCFLAGS} = join(' ', @ccflags);
- $VRML_CONFIG{FREEWRL_INC} = join(' ', @inc);
-@@ -165,16 +149,6 @@
+ # push build directory, for running standalone
+ 
+@@ -244,16 +227,6 @@
  
  print STDERR "Checking for the Mozilla JavaScript Reference library and application.\n";
  
@@ -54,37 +55,65 @@
 -    print STDERR "The Javascript library and application were found.\n";
 -} else {
 -    print STDERR "The Javascript library and application were not found - make them.\n";
+-
 -    chdir("JS/$jsdir");
 -    system("make -f Makefile.ref BUILD_OPT=$BUILD_OPT");
 -    chdir($pwd);
 -}
 -
--
+ print "Done, now doing writeMakefile\n";
+ 
  use ExtUtils::MakeMaker;
- require './Config.pm';
- 
-@@ -279,23 +253,20 @@
- 
+@@ -402,9 +375,8 @@
+ 		# Copy fonts over, etc.
  		push(@postamble, join(
- 							  "\n",
--							  qq{\# copy fonts, x3d, libjs.so over\n},
-+							  qq{\# copy fonts, x3d over\n},
- 							  qq{install ::},
- 							  qq{\tcp -r fonts $vrmlinstdir\n},
- 							  qq{\tcp -r x3d $vrmlinstdir\n},
--							  qq{\tcp JS/$jsobjdir/libjs.so $VRML::Config::vrml_config{LIBJS_INST}\n}
- 							 ));
- 
- 		push(@postamble, join(
- 							  "\n",
- 							  qq{clean ::},
--							  qq{\tcd JS/$jsdir && \$(MAKE) -f Makefile.ref BUILD_OPT=$BUILD_OPT clean\n}
- 							 ));
- 
- 		push(@postamble, join(
- 							  "\n",
- 							  qq{distclean :: realclean},
--							  qq{\tcd JS/$jsdir && \$(MAKE) -f Makefile.ref BUILD_OPT=$BUILD_OPT clobber}
- 							 ));
- 
- 		return join("\n", @postamble);
+ 				  "\n",
+-				qq{\# copy fonts, libjs.so over\n},
++				qq{\# copy fonts over\n},
+ 				qq{\tcp -r fonts \$(DESTINSTALLPRIVLIB)/VRML\n},
+-				qq{\tcp JS/$jsobjdir/libjs.so \$(DESTDIR)$LIB_DIR\n},
+ 				qq{\# copy copy the initialization file over\n},
+ 				qq{\tcp CFrontEnd/fw2init.pl \$(DESTINSTALLPRIVLIB)/VRML\n},
+ 				));
+@@ -412,8 +384,6 @@
+ 			push(@postamble, join(
+ 				"\n",
+ 				qq{# make the libFreeWRLFunc shared library active\n},
+-				qq{\tcp blib/arch/auto/VRML/VRMLFunc/VRMLFunc.so \$(DESTDIR)$LIB_DIR/libFreeWRLFunc.so\n},
+-				qq{\t/sbin/ldconfig\n}
+ 			));
+ 		}
+ 		if ($OS eq "Darwin") {
+@@ -462,11 +432,6 @@
+ 		###################################################
+ 		# lets do the clean:: targets at this step.
+ 		###################################################
+-		push(@postamble, join(
+-			  "\n",
+-			  qq{clean ::},
+-			  qq{\tcd JS/$jsdir && \$(MAKE) -f Makefile.ref BUILD_OPT=$BUILD_OPT clean\n},
+-			 ));
+ 		if ($OS ne "Darwin") {
+ 			push(@postamble, join(
+ 			  "\n",
+@@ -479,11 +444,6 @@
+ 		###################################################
+ 		# lets do the distclean:: targets at this step.
+ 		###################################################
+-		push(@postamble, join(
+-			  "\n",
+-			  qq{distclean :: realclean},
+-			  qq{\tcd JS/$jsdir && \$(MAKE) -f Makefile.ref BUILD_OPT=$BUILD_OPT clobber},
+-			 ));
+ 		if ($OS ne "Darwin") {
+ 			push(@postamble, join(
+ 			  "\n",
+@@ -504,8 +464,6 @@
+ 		if ($OS eq "Linux") {
+ 			push(@postamble, join(
+ 				"\n",
+-				#qq{\tcp blib/arch/auto/VRML/VRMLFunc/VRMLFunc.so $LIB_DIR/libFreeWRLFunc.so\n},
+-				#qq{\t/sbin/ldconfig\n}
+ 				qq{\t\tcp -f blib/arch/auto/VRML/VRMLFunc/VRMLFunc.so blib/arch/auto/VRML/VRMLFunc/libFreeWRLFunc.so\n},
+ 			));
+ 		}
