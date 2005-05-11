@@ -29,8 +29,9 @@ BuildRequires:	mozilla-devel
 BuildRequires:	mozilla-embedded(gtk2)
 BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	rpm-perlprov >= 4.1-13
+BuildRequires:	rpmbuild(macros) >= 1.213
 BuildRequires:	saxon
-%ifarch amd64 ia64 ppc64 s390x sparc64
+%ifarch %{x8664} ia64 ppc64 s390x sparc64
 Provides:	libFreeWRLFunc.so()(64-bit)
 %else
 Provides:	libFreeWRLFunc.so
