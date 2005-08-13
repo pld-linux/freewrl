@@ -1,10 +1,10 @@
---- FreeWRL-1.12/Makefile.PL.orig	2005-04-25 15:47:19.000000000 +0200
-+++ FreeWRL-1.12/Makefile.PL	2005-04-28 22:16:18.330867064 +0200
+--- FreeWRL-1.13/Makefile.PL.orig	2005-04-25 15:47:19.000000000 +0200
++++ FreeWRL-1.13/Makefile.PL	2005-04-28 22:16:18.330867064 +0200
 @@ -76,8 +76,6 @@
  
  my $sitearchjsdir = "\$(INSTALLPRIVLIB)/auto/VRML/JS";
  
--my $jsdir = "js/src";
+-my $jsdir = "js1.5/src";
 -my $jsobjdir;
  my $BUILD_OPT;
  
