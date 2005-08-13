@@ -6,12 +6,12 @@
 Summary:	FreeWRL - VRML browser
 Summary(pl):	FreeWRL - przegl±darka VRML
 Name:		freewrl
-Version:	1.12
+Version:	1.13
 Release:	1
 License:	LGPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/freewrl/FreeWRL-%{version}.tar.gz
-# Source0-md5:	cc717ca6587be7096e06338cd841350f
+# Source0-md5:	edba3a6f13d7b96c29cf49b9fa7b8a2f
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-system-js.patch
 Patch2:		%{name}-make.patch
@@ -111,6 +111,8 @@ Wtyczka VRML dla przegl±darki Konqueror.
 
 # this file causes unnecessary/unwanted rebuilds of JS module
 rm -f JS/Makefile.aqua.PL
+# kill precompiled object
+rm CFuncs/GenPolyRep.o
 
 %build
 %{__perl} Makefile.PL \
