@@ -1,13 +1,12 @@
---- FreeWRL-1.11/vrml.conf.orig	2005-04-07 17:04:49.000000000 +0200
-+++ FreeWRL-1.11/vrml.conf	2005-04-16 20:11:49.134915312 +0200
-@@ -96,8 +96,8 @@
- # If Java is not installed, leave JAVA_INST empty e.g.
- # JAVA_INST => ''
+diff -uNr freewrl-1.17.4.orig/vrml.conf freewrl-1.17.4/vrml.conf
+--- freewrl-1.17.4.orig/vrml.conf	2006-06-05 09:00:13.000000000 +0200
++++ freewrl-1.17.4/vrml.conf	2006-06-05 09:07:27.000000000 +0200
+@@ -95,7 +95,7 @@
  
+ ############################################################################
+ # Java dest. if no Java, comment out the JAVA line above, and the JAVA_INST line below.
 -    JAVA_INST => '/usr/java/j2sdk1.4.0',
--    JAVA_INC => '-I/usr/java/j2sdk1.4.0/include -I/usr/java/j2sdk1.4.0/include/linux',
 +    JAVA_INST => '/usr/lib/java',
-+    JAVA_INC => '-I/usr/lib/java/include -I/usr/lib/java/include/linux',
  
  ############################################################################
  # LDFLAGS.  Set linker flags here.
