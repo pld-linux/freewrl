@@ -2,23 +2,24 @@
 # - install fonts system-wide (subpackage?)
 # - why not having the plugin in single dir, /usr/lib/nsplugins, and
 #   all the browsers symlink there?
+# - check and correct/remove patch1 and patch2
 %include	/usr/lib/rpm/macros.perl
 Summary:	FreeWRL - VRML browser
 Summary(pl):	FreeWRL - przegl±darka VRML
 Name:		freewrl
-Version:	1.13
-Release:	1
+Version:	1.17.4
+Release:	0.1
 License:	LGPL
 Group:		X11/Applications/Graphics
-Source0:	http://dl.sourceforge.net/freewrl/FreeWRL-%{version}.tar.gz
-# Source0-md5:	edba3a6f13d7b96c29cf49b9fa7b8a2f
+Source0:	http://dl.sourceforge.net/freewrl/%{name}-%{version}.tar.gz
+# Source0-md5:	0c4e7d91b51c593d37ca190d112c869e
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-system-js.patch
 Patch2:		%{name}-make.patch
 URL:		http://freewrl.sourceforge.net/
 BuildRequires:	ImageMagick
 BuildRequires:	OpenGL-devel
-BuildRequires:	XFree86-devel
+BuildRequires:	X11-devel
 BuildRequires:	freetype-devel >= 2.0
 BuildRequires:	jar
 BuildRequires:	jdk
@@ -104,15 +105,13 @@ VRML plugin for Konqueror browser.
 Wtyczka VRML dla przegl±darki Konqueror.
 
 %prep
-%setup -q -n FreeWRL-%{version}
+%setup -q -n %{name}-%{version}
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
+#%patch1 -p1
+#%patch2 -p1
 
 # this file causes unnecessary/unwanted rebuilds of JS module
 rm -f JS/Makefile.aqua.PL
-# kill precompiled object
-rm CFuncs/GenPolyRep.o
 
 %build
 %{__perl} Makefile.PL \
