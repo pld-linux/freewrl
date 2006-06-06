@@ -24,6 +24,7 @@ BuildRequires:	freetype-devel >= 2.0
 BuildRequires:	jar
 BuildRequires:	jdk
 BuildRequires:	js-devel
+BuildRequires:	lesstif-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel
 BuildRequires:	mozilla-devel
