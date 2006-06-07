@@ -2,20 +2,20 @@
 # - install fonts system-wide (subpackage?)
 # - why not having the plugin in single dir, /usr/lib/nsplugins, and
 #   all the browsers symlink there?
-# - check and correct/remove patch1 and patch2
+# - ?? add more to optimize.patch
 %include	/usr/lib/rpm/macros.perl
 Summary:	FreeWRL - VRML browser
 Summary(pl):	FreeWRL - przegl±darka VRML
 Name:		freewrl
 Version:	1.17.4
-Release:	0.1
+Release:	0.2
 License:	LGPL
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/freewrl/%{name}-%{version}.tar.gz
 # Source0-md5:	0c4e7d91b51c593d37ca190d112c869e
 Patch0:		%{name}-config.patch
-Patch1:		%{name}-system-js.patch
-Patch2:		%{name}-make.patch
+Patch1:		%{name}-make.patch
+Patch2:		%{name}-system-js.patch
 Patch3:		%{name}-optimize.patch
 URL:		http://freewrl.sourceforge.net/
 BuildRequires:	ImageMagick
@@ -162,6 +162,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc README.html
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/libFreeWRLFunc.so
+%attr(755,root,root) %{_libdir}/libFreeWRLjs.so
+
 %dir %{perl_vendorlib}/VRML
 %attr(755,root,root) %{perl_vendorlib}/VRML/fw2init.pl
 %{perl_vendorlib}/VRML/java.policy
