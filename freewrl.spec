@@ -16,6 +16,7 @@ Source0:	http://dl.sourceforge.net/freewrl/%{name}-%{version}.tar.gz
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-system-js.patch
 Patch2:		%{name}-make.patch
+Patch3:		%{name}-optimize.patch
 URL:		http://freewrl.sourceforge.net/
 BuildRequires:	ImageMagick
 BuildRequires:	OpenGL-devel
@@ -108,8 +109,9 @@ Wtyczka VRML dla przegl±darki Konqueror.
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1
-#%patch1 -p1
-#%patch2 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 # this file causes unnecessary/unwanted rebuilds of JS module
 rm -f JS/Makefile.aqua.PL
@@ -131,7 +133,8 @@ rm -f JS/Makefile.aqua.PL
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{mozilladir}/plugins,%{netscapedir}/plugins} \
 	$RPM_BUILD_ROOT%{_libdir}/{mozilla-firefox/plugins,kde3/plugins/konqueror} \
-	$RPM_BUILD_ROOT%{perl_vendorlib}/VRML
+	$RPM_BUILD_ROOT%{perl_vendorlib}/VRML \
+	$RPM_BUILD_ROOT%{_bindir}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
