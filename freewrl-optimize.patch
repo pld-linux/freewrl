@@ -1,0 +1,56 @@
+diff -uNr freewrl-1.17.4.orig/CFrontEnd/Makefile freewrl-1.17.4/CFrontEnd/Makefile
+--- freewrl-1.17.4.orig/CFrontEnd/Makefile	2006-05-10 16:50:23.000000000 +0200
++++ freewrl-1.17.4/CFrontEnd/Makefile	2006-06-07 10:35:47.000000000 +0200
+@@ -11,15 +11,15 @@
+ 	cp freewrl $(BINDIR)
+ 
+ fwopts:
+-	$(CC) $(INC) $(FWFLAGS) $(DEFINE) fwopts.c
++	$(CC) $(INC) $(FWFLAGS) $(DEFINE) $(OPTIMIZE) fwopts.c
+ 
+ fwWindow:
+-	$(CC) $(INC) $(FWFLAGS) $(DEFINE) fwWindow.c
++	$(CC) $(INC) $(FWFLAGS) $(DEFINE) $(OPTIMIZE) fwWindow.c
+ 
+ freewrl: fwopts fwWindow
+-	$(CC) $(INC) $(FWFLAGS) $(DEFINE) freewrl.c
++	$(CC) $(INC) $(FWFLAGS) $(DEFINE) $(OPTIMIZE) freewrl.c
+ 
+-	$(CC) -L../blib/arch/auto/VRML/VRMLFunc -o freewrl \
++	$(CC) $(OPTIMIZE) -L../blib/arch/auto/VRML/VRMLFunc -o freewrl \
+ 	freewrl.o fwopts.o fwWindow.o \
+ 	`perl -MExtUtils::Embed -e ccopts -e ldopts` \
+ 	$(LIBS) \
+diff -uNr freewrl-1.17.4.orig/FreeWRL_Message/Makefile freewrl-1.17.4/FreeWRL_Message/Makefile
+--- freewrl-1.17.4.orig/FreeWRL_Message/Makefile	2006-05-10 16:50:23.000000000 +0200
++++ freewrl-1.17.4/FreeWRL_Message/Makefile	2006-06-07 10:36:41.000000000 +0200
+@@ -3,7 +3,7 @@
+ 
+ COMPILERFLAGS = -Wall
+ CC = gcc
+-CFLAGS = $(COMPILERFLAGS) $(INCLUDE)
++CFLAGS = $(COMPILERFLAGS) $(INCLUDE) $(OPTIMIZE)  
+ # use this for better borders on window LIBRARIES = -lXaw3d
+ LIBRARIES = -lXaw
+ SVROBJ = FreeWRL_Message.o
+diff -uNr freewrl-1.17.4.orig/Plugin/Makefile freewrl-1.17.4/Plugin/Makefile
+--- freewrl-1.17.4.orig/Plugin/Makefile	2006-05-10 16:50:23.000000000 +0200
++++ freewrl-1.17.4/Plugin/Makefile	2006-06-07 10:37:32.000000000 +0200
+@@ -45,13 +45,13 @@
+ 	cp $(SHAREDTARGET) $(PLUGDIR)
+ 
+ $(SHAREDTARGET): $(OBJ)
+-	$(CC) -shared -o $(SHAREDTARGET) $(OBJ) $(LDFLAGS)
++	$(CC) -shared -o $(SHAREDTARGET) $(OBJ) $(OPTIMIZE) $(LDFLAGS)
+ 
+ npfreewrl.o: netscape/source/npfreewrl.c
+-	$(CC) -c $(CFLAGS) netscape/source/npfreewrl.c
++	$(CC) -c $(CFLAGS) $(OPTIMIZE) netscape/source/npfreewrl.c
+ 
+ npunix.o: netscape/source/common/npunix.c
+-	$(CC) -c $(CFLAGS) netscape/source/common/npunix.c
++	$(CC) -c $(CFLAGS) $(OPTIMIZE) netscape/source/common/npunix.c
+ 
+ clean:
+ 	$(RM) $(OBJ) $(SHAREDTARGET)
+
