@@ -1,11 +1,11 @@
 diff -uNr freewrl-1.17.4.orig/CFrontEnd/Makefile freewrl-1.17.4/CFrontEnd/Makefile
 --- freewrl-1.17.4.orig/CFrontEnd/Makefile	2006-05-10 16:50:23.000000000 +0200
-+++ freewrl-1.17.4/CFrontEnd/Makefile	2006-06-07 10:49:40.000000000 +0200
-@@ -8,6 +8,7 @@
++++ freewrl-1.17.4/CFrontEnd/Makefile	2006-06-07 12:29:42.000000000 +0200
+@@ -7,7 +7,6 @@
+ all:	freewrl
  
  install:  freewrl
- 	strip freewrl
-+	chmod 666 $(BINDIR)/freewrl
+-	strip freewrl
  	cp freewrl $(BINDIR)
  
  fwopts:
@@ -72,3 +72,4 @@ diff -uNr freewrl-1.17.4.orig/CFrontEnd/Makefile freewrl-1.17.4/CFrontEnd/Makefi
 -	cp FreeWRL_Message $(BINDIR)
 +install: FreeWRL_Message
 +	install FreeWRL_Message $(BINDIR)
+
