@@ -6,7 +6,7 @@
 %define		pdir	VRML
 %define		pnam	VRMLFunc
 Summary:	FreeWRL - VRML browser
-Summary(pl):	FreeWRL - przegl±darka VRML
+Summary(pl.UTF-8):   FreeWRL - przeglÄ…darka VRML
 Name:		freewrl
 Version:	1.17.4
 Release:	0.2
@@ -53,12 +53,12 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 FreeWRL - VRML browser.
 
-%description -l pl
-FreeWRL - przegl±darka VRML.
+%description -l pl.UTF-8
+FreeWRL - przeglÄ…darka VRML.
 
 %package -n browser-plugin-%{name}
 Summary:	VRML plugin for WWW browser
-Summary(pl):	Wtyczka VRML dla przegl±darki WWW
+Summary(pl.UTF-8):   Wtyczka VRML dla przeglÄ…darki WWW
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	browser-plugins(%{_target_base_arch})
@@ -72,10 +72,10 @@ VRML plugin for Mozilla WWW browser.
 
 Supported browsers: %{browsers}.
 
-%description -n browser-plugin-%{name} -l pl
-Wtyczka VRML dla przegl±darki WWW Mozilla.
+%description -n browser-plugin-%{name} -l pl.UTF-8
+Wtyczka VRML dla przeglÄ…darki WWW Mozilla.
 
-Obs³ugiwane przegl±darki: %{browsers}.
+ObsÅ‚ugiwane przeglÄ…darki: %{browsers}.
 
 %prep
 %setup -q
