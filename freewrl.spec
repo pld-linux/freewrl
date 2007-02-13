@@ -6,7 +6,7 @@
 %define		pdir	VRML
 %define		pnam	VRMLFunc
 Summary:	FreeWRL - VRML browser
-Summary(pl.UTF-8):   FreeWRL - przeglądarka VRML
+Summary(pl.UTF-8):	FreeWRL - przeglądarka VRML
 Name:		freewrl
 Version:	1.17.4
 Release:	0.2
@@ -58,7 +58,7 @@ FreeWRL - przeglądarka VRML.
 
 %package -n browser-plugin-%{name}
 Summary:	VRML plugin for WWW browser
-Summary(pl.UTF-8):   Wtyczka VRML dla przeglądarki WWW
+Summary(pl.UTF-8):	Wtyczka VRML dla przeglądarki WWW
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	browser-plugins(%{_target_base_arch})
