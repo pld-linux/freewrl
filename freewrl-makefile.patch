@@ -1,0 +1,71 @@
+--- freewrl-1.19.8.orig/Makefile.PL	2007-09-21 20:38:13.000000000 +0000
++++ freewrl-1.19.8/Makefile.PL	2007-12-02 20:49:58.000000000 +0000
+@@ -303,8 +303,8 @@
+ 
+ 	print MK "install:\tall	\n";
+ 	if ($OS ne "Darwin") {
+-	print MK "\tstrip CFrontEnd/freewrl\n";
+-	print MK "\tstrip FreeWRL_Msg/FreeWRL_Message\n";
++#		print MK "\tstrip CFrontEnd/freewrl\n";
++#		print MK "\tstrip FreeWRL_Msg/FreeWRL_Message\n";
+ 	if ($VRML_CONFIG{SOUND_ENGINE}) { 
+ 		print MK "\tstrip SoundEngine/FreeWRL_SoundServer\n";
+ 	}
+@@ -321,7 +321,7 @@
+ 			print MK "\t-$CHCON -t texrel_shlib_t  \$(DESTDIR)\$(LIB_DIR)/libFreeWRLFunc.so\n";
+ 		}
+ 		if ($HAVE_UBUNTU eq "NO") {
+-			print MK "\t/sbin/ldconfig\n";
++#			print MK "\t/sbin/ldconfig\n";
+ 		}
+ 	}
+ 	if ($VRML_CONFIG{SOUND_ENGINE}) { 
+@@ -342,14 +342,14 @@
+ 		}
+ 	}
+ 	if ($OS ne "Darwin") {
+-	print MK "\tinstall -D Desktop/freewrl.png \$(DESTDIR)\$(INSTALL_DIR)\/pixmaps/Desktop/freewrl.png\n";
+-	print MK "\tinstall -D Desktop/freewrl.desktop \$(DESTDIR)\$(INSTALL_DIR)\/applications/Desktop/freewrl.desktop\n";
++	print MK "\tinstall -D Desktop/freewrl.png \$(DESTDIR)\$(INSTALL_DIR)\/pixmaps/freewrl.png\n";
++	print MK "\tinstall -D Desktop/freewrl.desktop \$(DESTDIR)\$(INSTALL_DIR)\/applications/freewrl.desktop\n";
+ 	# we need the 2 installs for the following; the first makes the directory, the second fills it.
+ 	print MK "\tinstall -d fonts \$(DESTDIR)\$(INSTALL_DIR)/freewrl/fonts\n";
+ 	print MK "\tinstall -D fonts/* \$(DESTDIR)\$(INSTALL_DIR)/freewrl/fonts\n";
+ 	} else {
+ 	print MK "\tcp -f freewrl.aquascript /usr/bin/freewrl\n";
+-	print MK "\tchmod 755 /usr/bin/freewrl\n";
++#	print MK "\tchmod 755 /usr/bin/freewrl\n";
+ 	print MK "\tinstall -d \$(INSTALL_DIR)/freewrl/fonts\n";
+ 	print MK "\tinstall fonts/*.ttf \$(INSTALL_DIR)/freewrl/fonts\n";
+ 	print MK "\tinstall fonts/*.TXT \$(INSTALL_DIR)/freewrl/fonts\n";
+@@ -562,8 +562,8 @@
+ 		print MK "\techo \"\$(DESTDIR)\$(FRONTEND_DIR)/FreeWRL_SoundServer\" >> $specfile\n";
+                 print MK "\techo \"\$(DESTDIR)$VRML_CONFIG{NETSCAPE_INST}/vrml.jar\" >> $specfile\n";
+                 print MK "\techo \"\$(DESTDIR)$VRML_CONFIG{NETSCAPE_INST}/npfreewrl.so\" >> $specfile\n";
+-                print MK "\techo \"\$(DESTDIR)\$(INSTALL_DIR)\/pixmaps/Desktop/freewrl.png\" >> $specfile\n";
+-                print MK "\techo \"\$(DESTDIR)\$(INSTALL_DIR)\/applications/Desktop/freewrl.desktop\" >> $specfile\n";
++                print MK "\techo \"\$(DESTDIR)\$(INSTALL_DIR)\/pixmaps/freewrl.png\" >> $specfile\n";
++                print MK "\techo \"\$(DESTDIR)\$(INSTALL_DIR)\/applications/freewrl.desktop\" >> $specfile\n";
+                 print MK "\techo \"\$(DESTDIR)\$(INSTALL_DIR)/freewrl/fonts\" >> $specfile\n";
+ 	}
+ }
+@@ -619,7 +619,7 @@
+ 		print MK "\trm -f \$(DESTDIR)\$(LIB_DIR)/libFreeWRLFunc.so\n";
+ 		print MK "\trm -f \$(DESTDIR)\$(LIB_DIR)/libFreeWRLjs.so\n";
+ 		if ($HAVE_UBUNTU eq "NO") {
+-			print MK "\t/sbin/ldconfig\n";
++#			print MK "\t/sbin/ldconfig\n";
+ 		}
+ 	}
+ 	if ($VRML_CONFIG{SOUND_ENGINE}) { 
+@@ -636,8 +636,8 @@
+ 	}
+ 	}
+ 	if ($OS ne "Darwin") {
+-		print MK "\trm -f \$(DESTDIR)\$(INSTALL_DIR)\/pixmaps/Desktop/freewrl.png\n";
+-		print MK "\trm -f \$(DESTDIR)\$(INSTALL_DIR)\/applications/Desktop/freewrl.desktop\n";
++		print MK "\trm -f \$(DESTDIR)\$(INSTALL_DIR)\/pixmaps/freewrl.png\n";
++		print MK "\trm -f \$(DESTDIR)\$(INSTALL_DIR)\/applications/freewrl.desktop\n";
+ 	}
+ 	print MK "\trm -rf \$(DESTDIR)\$(INSTALL_DIR)/freewrl/fonts\n";
+ 	print MK "\trm -rf \$(DESTDIR)\$(INSTALL_DIR)/freewrl/x3d\n";
