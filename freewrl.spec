@@ -28,7 +28,7 @@ BuildRequires:	libpng-devel
 BuildRequires:	openmotif-devel
 BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	rpm-perlprov >= 4.1-13
-BuildRequires:	rpmbuild(macros) >= 1.236
+BuildRequires:	rpmbuild(macros) >= 1.357
 BuildRequires:	saxon
 BuildRequires:	xorg-lib-libXaw-devel
 %ifarch %{x8664} ia64 ppc64 s390x sparc64
@@ -56,7 +56,7 @@ Summary:	VRML/X3D plugin for WWW browser
 Summary(pl.UTF-8):	Wtyczka VRML/X3D dla przeglądarki WWW
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	browser-plugins(%{_target_base_arch})
+Requires:	browser-plugins >= 2.0
 Obsoletes:	konqueror-plugin-freewrl
 Obsoletes:	mozilla-firefox-plugin-freewrl
 Obsoletes:	mozilla-plugin-freewrl
