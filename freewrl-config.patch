@@ -1,7 +1,15 @@
-diff -uNr freewrl-1.17.4.orig/vrml.conf freewrl-1.17.4/vrml.conf
---- freewrl-1.17.4.orig/vrml.conf	2006-06-05 09:00:13.000000000 +0200
-+++ freewrl-1.17.4/vrml.conf	2006-06-05 09:07:27.000000000 +0200
-@@ -95,7 +95,7 @@
+--- freewrl-1.19.8/vrml.conf.orig	2007-09-21 22:38:13.000000000 +0200
++++ freewrl-1.19.8/vrml.conf	2008-01-12 19:58:42.226030071 +0100
+@@ -62,7 +62,7 @@
+ # line, and cross fingers.
+ # adding -DDEBUG_MALLOC to the FREEWRL_DEFINE line will track malloc,realloc,frees.
+ 
+-    FREEWRL_LIBS => '-L/usr/lib -L/usr/X11R6/lib -lGL -lGLU -lXext -lX11 -lfreetype -lpng -lz -ljpeg -lexpat',
++    FREEWRL_LIBS => ' -lGL -lGLU -lXext -lX11 -lfreetype -lpng -lz -ljpeg -lexpat',
+     FREEWRL_DEFINE => '-ansi -DHAVE_MOTIF -DXP_UNIX -D_GNU_SOURCE ',
+     FREEWRL_INC => '-I/usr/X11R6/include/ -I/usr/include/freetype2 -I/usr/include/freetype2/freetype',
+ 
+@@ -70,7 +70,7 @@
  
  ############################################################################
  # Java dest. if no Java, comment out the JAVA line above, and the JAVA_INST line below.
@@ -9,4 +17,13 @@ diff -uNr freewrl-1.17.4.orig/vrml.conf freewrl-1.17.4/vrml.conf
 +    JAVA_INST => '/usr/lib/java',
  
  ############################################################################
+ # some Java compilers need a extra extension to the classpath
+@@ -82,7 +82,7 @@
+ ############################################################################
  # LDFLAGS.  Set linker flags here.
+ 
+-    LDFLAGS => '-shared -L/usr/local/lib',
++    LDFLAGS => '-shared',
+ 
+ 
+ ############################################################################
