@@ -1,44 +1,107 @@
---- FreeWRL-1.13/Makefile.PL.orig	2005-04-25 15:47:19.000000000 +0200
-+++ FreeWRL-1.13/Makefile.PL	2005-04-28 22:16:18.330867064 +0200
-@@ -412,8 +384,6 @@
- 			push(@postamble, join(
- 				"\n",
- 				qq{# make the libFreeWRLFunc shared library active\n},
--				qq{\tcp blib/arch/auto/VRML/VRMLFunc/VRMLFunc.so \$(DESTDIR)$LIB_DIR/libFreeWRLFunc.so\n},
--				qq{\t/sbin/ldconfig\n}
- 			));
+--- freewrl-1.19.8/Makefile.PL.orig	2008-01-12 18:27:02.568622000 +0100
++++ freewrl-1.19.8/Makefile.PL	2008-01-12 19:24:10.279956593 +0100
+@@ -108,8 +108,6 @@
+ ## Handle platform-specific compile options for the Javascript engine
+ ## and others specific to FreeWRL.
+ 
+-my $jsdir = "js1.5/src";
+-my $jsobjdir;
+ my $noStackProtector = "";
+ 
+ my @inc;
+@@ -119,21 +117,6 @@
+ my @jslibs;
+ 
+ 
+-if ($OS eq  "IRIX64") {
+-	$jsobjdir = "$jsdir/IRIX6.5";
+-} elsif ($OS eq "Darwin") {
+-	$jsobjdir = "$jsdir/Darwin";
+-} elsif ($OS eq "SunOS") {
+-	$jsobjdir = "$jsdir/SunOS5.8";
+-} else { ## linux used by default
+-	$jsobjdir = "$jsdir/Linux_All";
+-}
+-
+-#location of the spidermonkey js engine.
+-$jsobjdir .= "_OPT.OBJ";
+-my $libFreeWRLjspath = "./JS/".$jsobjdir."/libFreeWRLjs.so";
+-
+-#print "the javascript engine should be located at: $libFreeWRLjspath\n";
+ 
+ 
+ 
+@@ -155,11 +138,8 @@
+ 	print "this system does not use the -fno-stack-protector flag\n";
+ }
+ 
+-push @inc, $VRML_CONFIG{FREEWRL_INC}, "-IJS/$jsobjdir", "-IJS/$jsdir", "-ICFuncs -ICFrontEnd ";
+-push @libs, $VRML_CONFIG{FREEWRL_LIBS}, "-LJS/$jsobjdir", "-lFreeWRLjs";
+-if ($OS eq "Darwin") {
+-push @ldflags, $VRML_CONFIG{LDFLAGS}, "-LJS/$jsobjdir";
+-}
++push @inc, $VRML_CONFIG{FREEWRL_INC}, "-I/usr/include/js", "-ICFuncs -ICFrontEnd ";
++push @libs, $VRML_CONFIG{FREEWRL_LIBS}, "-ljs";
+ 
+ # push build directory, for running standalone
+ 
+@@ -314,10 +294,7 @@
+ 	}
+ 	if ($OS eq "Linux") {
+ 		print MK "\tinstall -D libFreeWRLFunc.so \$(DESTDIR)\$(LIB_DIR)/libFreeWRLFunc.so\n";
+-		print MK "\tinstall -D $libFreeWRLjspath \$(DESTDIR)\$(LIB_DIR)/libFreeWRLjs.so\n";
+-
+ 		if ($CHCON ne "") {
+-			print MK "\t-$CHCON -t texrel_shlib_t  \$(DESTDIR)\$(LIB_DIR)/libFreeWRLjs.so\n";
+ 			print MK "\t-$CHCON -t texrel_shlib_t  \$(DESTDIR)\$(LIB_DIR)/libFreeWRLFunc.so\n";
  		}
- 		if ($OS eq "Darwin") {
-@@ -462,11 +432,6 @@
- 		###################################################
- 		# lets do the clean:: targets at this step.
- 		###################################################
--		push(@postamble, join(
--			  "\n",
--			  qq{clean ::},
--			  qq{\tcd JS/$jsdir && \$(MAKE) -f Makefile.ref BUILD_OPT=$BUILD_OPT clean\n},
--			 ));
- 		if ($OS ne "Darwin") {
- 			push(@postamble, join(
- 			  "\n",
-@@ -479,11 +444,6 @@
- 		###################################################
- 		# lets do the distclean:: targets at this step.
- 		###################################################
--		push(@postamble, join(
--			  "\n",
--			  qq{distclean :: realclean},
--			  qq{\tcd JS/$jsdir && \$(MAKE) -f Makefile.ref BUILD_OPT=$BUILD_OPT clobber},
--			 ));
- 		if ($OS ne "Darwin") {
- 			push(@postamble, join(
- 			  "\n",
-@@ -504,8 +464,6 @@
- 		if ($OS eq "Linux") {
- 			push(@postamble, join(
- 				"\n",
--				#qq{\tcp blib/arch/auto/VRML/VRMLFunc/VRMLFunc.so $LIB_DIR/libFreeWRLFunc.so\n},
--				#qq{\t/sbin/ldconfig\n}
- 				qq{\t\tcp -f blib/arch/auto/VRML/VRMLFunc/VRMLFunc.so blib/arch/auto/VRML/VRMLFunc/libFreeWRLFunc.so\n},
- 			));
+ 		if ($HAVE_UBUNTU eq "NO") {
+@@ -461,11 +438,9 @@
+ }
+ 
+ sub write_linux_makefile_javascript() {
+-	#############################################################################
+-	## make the Javascript libraries if needed
+     
+ 	print MK "Javascript:\n";
+-	print MK "\tcd JS/$jsdir; make -f Makefile.ref BUILD_OPT=1 STACKPROT=$noStackProtector; cd $pwd\n";
++	print MK "\n";
+ }
+ 
+ 
+@@ -556,7 +531,6 @@
+ 		print MK "\techo \"%files\" >> $specfile\n";
+ 		print MK "\techo \"%defattr(-,root,root)\" >> $specfile\n";
+ 		print MK "\techo \"\$(DESTDIR)\$(LIB_DIR)/libFreeWRLFunc.so\" >> $specfile\n";
+-		print MK "\techo \"\$(DESTDIR)\$(LIB_DIR)/libFreeWRLjs.so\" >> $specfile\n";
+ 		print MK "\techo \"\$(DESTDIR)\$(FRONTEND_DIR)/FreeWRL_Message\" >> $specfile\n";
+ 		print MK "\techo \"\$(DESTDIR)\$(FRONTEND_DIR)/freewrl\" >> $specfile\n";
+ 		print MK "\techo \"\$(DESTDIR)\$(FRONTEND_DIR)/FreeWRL_SoundServer\" >> $specfile\n";
+@@ -597,19 +571,11 @@
+ 	print MK "	rm -f java/classes/sai/eai/*class\n";
+ 	print MK "	rm -f java/classes/org/web3d/x3d/sai/*class\n";
+ 	print MK "	rm -f java/classes/vrml.jar\n";
+-	print MK "	rm -rf JS/$jsobjdir\n";
+ 
+ 	if ($OS eq "Darwin") {
+ 		print MK "	rm -f /usr/local/lib/libFreeWRLFunc.dylib\n";
+-		print MK "	rm -f /usr/local/lib/libFreeWRLjs.dylib\n";
+ 	}
+ 
+-	# remove other JS directories
+-	$jsobjdir =~s/src/src\/editline/;
+-	print MK "	rm -rf JS/$jsobjdir\n";
+-	$jsobjdir =~ s/editline/fdlibm/;
+-	print MK "	rm -rf JS/$jsobjdir\n";
+-
+ 	print MK "\n#remove installed images\n";
+ 	print MK "distclean:	clean\n";
+ 	print MK "\trm -f \$(DESTDIR)\$(FRONTEND_DIR)/freewrl\n";
+@@ -617,7 +583,6 @@
+ 	
+ 	if ($OS eq "Linux") {
+ 		print MK "\trm -f \$(DESTDIR)\$(LIB_DIR)/libFreeWRLFunc.so\n";
+-		print MK "\trm -f \$(DESTDIR)\$(LIB_DIR)/libFreeWRLjs.so\n";
+ 		if ($HAVE_UBUNTU eq "NO") {
+ #			print MK "\t/sbin/ldconfig\n";
  		}
