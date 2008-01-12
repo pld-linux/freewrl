@@ -1,7 +1,6 @@
 # TODO:
 # - install fonts system-wide (subpackage?)
-# - CC not always honoured
-# - ?? add more to optimize.patch
+# - install one copy of vrml.jar
 %include	/usr/lib/rpm/macros.perl
 %define		pdir	VRML
 %define		pnam	VRMLFunc
@@ -10,22 +9,23 @@ Summary(pl.UTF-8):	FreeWRL - przeglądarka VRM/X3D
 Name:		freewrl
 Version:	1.19.8
 Release:	0.2
-License:	LGPL
+License:	LGPL v2
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/freewrl/%{name}-%{version}.tar.gz
 # Source0-md5:	c193a1eb6e88c4253b6aec02098a9d3c
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-makefile.patch
-#Patch2:		%{name}-system-js.patch
-#Patch3:		%{name}-optimize.patch
+Patch2:		%{name}-system-js.patch
+Patch3:		%{name}-optimize.patch
 URL:		http://freewrl.sourceforge.net/
 BuildRequires:	ImageMagick-devel
 BuildRequires:	OpenGL-devel
 BuildRequires:	freetype-devel >= 2.0
-BuildRequires:	java-sun
+BuildRequires:	jdk
+BuildRequires:	js-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel
-BuildRequires:	openmotif-devel
+BuildRequires:	motif-devel
 BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.357
@@ -76,11 +76,12 @@ Obsługiwane przeglądarki: %{browsers}.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-#%patch2 -p1
-#%patch3 -p1
+%patch2 -p1
+%patch3 -p1
 
-# this file causes unnecessary/unwanted rebuilds of JS module
-rm -f JS/Makefile.aqua.PL
+# avoid using included js
+rm -rf JS
+
 %{__sed} -i -e 's#\(NETSCAPE_\(INST\|CLASSES\|PLUGINS\)\) =>.*#\1 => "%{_browserpluginsdir}",#' vrml.conf*
 
 %build
@@ -90,7 +91,6 @@ rm -f JS/Makefile.aqua.PL
 %{__make} -j1 \
 	CC="%{__cc}" \
 	OPTIMIZE="%{rpmcflags}" \
-	OPTIMIZER="%{rpmcflags}" \
 	DESTINSTALLPRIVLIB=%{perl_vendorlib}
 
 %{__make} -C Plugin \
@@ -105,7 +105,8 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_browserpluginsdir},%{perl_vendorlib}/VR
 	DESTDIR=$RPM_BUILD_ROOT \
 	SITEARCHEXP=$RPM_BUILD_ROOT%{perl_vendorarch} \
 	DESTINSTALLPRIVLIB=$RPM_BUILD_ROOT%{perl_vendorlib} \
-	PLUGDIR=%{_browserpluginsdir}
+	PLUGDIR=%{_browserpluginsdir} \
+	CHCON=true
 
 # specified in java/classes/Makefile.PL, but finally not installed
 install java/classes/vrml.jar $RPM_BUILD_ROOT%{perl_vendorlib}/VRML
@@ -116,9 +117,8 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/fonts/{COPYRIGHT,README,RELEASENOTES}.T
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -p /sbin/ldconfig
-
-%postun -p /sbin/ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %post -n browser-plugin-%{name}
 %update_browser_plugins
@@ -130,10 +130,11 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc README.html
-%attr(755,root,root) %{_bindir}/*
+%doc CHANGELOG README.html
+%attr(755,root,root) %{_bindir}/FreeWRL_Message
+%attr(755,root,root) %{_bindir}/FreeWRL_SoundServer
+%attr(755,root,root) %{_bindir}/freewrl
 %attr(755,root,root) %{_libdir}/libFreeWRLFunc.so
-%attr(755,root,root) %{_libdir}/libFreeWRLjs.so
 %dir %{perl_vendorlib}/VRML
 %{perl_vendorlib}/VRML/java.policy
 %{perl_vendorlib}/VRML/vrml.jar
@@ -146,5 +147,5 @@ fi
 
 %files -n browser-plugin-%{name}
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_browserpluginsdir}/*.so
-%attr(755,root,root) %{_browserpluginsdir}/vrml.jar
+%attr(755,root,root) %{_browserpluginsdir}/npfreewrl.so
+%{_browserpluginsdir}/vrml.jar
