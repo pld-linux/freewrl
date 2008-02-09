@@ -8,7 +8,7 @@ Summary:	FreeWRL - VRML/X3D browser
 Summary(pl.UTF-8):	FreeWRL - przeglądarka VRM/X3D
 Name:		freewrl
 Version:	1.19.8
-Release:	0.2
+Release:	0.3
 License:	LGPL v2
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/freewrl/%{name}-%{version}.tar.gz
