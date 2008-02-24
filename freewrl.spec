@@ -8,7 +8,7 @@ Summary:	FreeWRL - VRML/X3D browser
 Summary(pl.UTF-8):	FreeWRL - przeglądarka VRM/X3D
 Name:		freewrl
 Version:	1.19.8
-Release:	1
+Release:	2
 License:	LGPL v2
 Group:		X11/Applications/Graphics
 Source0:	http://dl.sourceforge.net/freewrl/%{name}-%{version}.tar.gz
@@ -37,6 +37,8 @@ Provides:	libFreeWRLFunc.so()(64-bit)
 Provides:	libFreeWRLFunc.so
 %endif
 Requires:	perl(DynaLoader) = %(%{__perl} -MDynaLoader -e 'print DynaLoader->VERSION')
+# jdk only these platforms
+ExclusiveArch:	i586 i686 pentium3 pentium4 athlon %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
