@@ -39,8 +39,6 @@ Provides:	libFreeWRLFunc.so
 Requires:	perl(DynaLoader) = %(%{__perl} -MDynaLoader -e 'print DynaLoader->VERSION')
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		browsers mozilla, mozilla-firefox, konqueror, seamonkey
-
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
 # false positives found by perlreq from rpm 4.1
 %define		_noautoreq	'perl(VRML::Events)' 'perl(VRML::VRMLCU)' 'perl(VRML::VRMLFields)' 'perl(VRML::VRMLNodes)' 'perl(VRMLFields)' 'perl(VRMLNodes)' 'perl(VRMLRend)'
@@ -65,12 +63,8 @@ Obsoletes:	netscape-plugin-freewrl
 %description -n browser-plugin-%{name}
 VRML and X3D plugin for WWW browser.
 
-Supported browsers: %{browsers}.
-
 %description -n browser-plugin-%{name} -l pl.UTF-8
 Wtyczka VRML i X3D dla przeglądarki WW.
-
-Obsługiwane przeglądarki: %{browsers}.
 
 %prep
 %setup -q
