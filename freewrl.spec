@@ -37,7 +37,6 @@ Provides:	libFreeWRLFunc.so()(64-bit)
 Provides:	libFreeWRLFunc.so
 %endif
 # jdk only these platforms
-ExclusiveArch:	i586 i686 pentium3 pentium4 athlon %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
