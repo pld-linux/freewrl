@@ -1,7 +1,6 @@
 # TODO:
 # - install fonts system-wide (subpackage?)
 # - install one copy of vrml.jar
-%include	/usr/lib/rpm/macros.perl
 %define		pdir	VRML
 %define		pnam	VRMLFunc
 Summary:	FreeWRL - VRML/X3D browser
